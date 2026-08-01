@@ -7,6 +7,7 @@ import { clearSession, getAuthEmail, subscribeToAuth } from "@/lib/auth-store";
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
+  const isChat = pathname.startsWith("/chat");
   const isDashboard = pathname.startsWith("/dashboard");
   const isFaq = pathname.startsWith("/faq");
 
@@ -27,27 +28,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
             <span className="leading-tight">
               <span className="block text-sm font-semibold tracking-tight text-foreground">
-                Atlas FAQ
+                Invisível
               </span>
               <span className="block text-xs text-muted-foreground">
-                Atendimento automatizado
+                Tecnologia que esconde
               </span>
             </span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          {email && !isChat && <div className="flex items-center gap-3">
             <nav className="flex items-center gap-1 rounded-full border border-border bg-secondary p-1">
-              <Link
-                to="/"
-                className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  isDashboard || isFaq
-                    ? "text-muted-foreground hover:text-foreground"
-                    : "bg-card text-foreground shadow-soft"
-                }`}
-              >
-                <MessagesSquare className="size-4" aria-hidden />
-                Chatbot
-              </Link>
               <Link
                 to="/dashboard"
                 className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
@@ -71,31 +61,22 @@ export function AppShell({ children }: { children: ReactNode }) {
                 FAQ
               </Link>
             </nav>
-
-            {email ? (
-              <div className="flex items-center gap-2">
-                <span className="hidden text-xs text-muted-foreground sm:inline">{email}</span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    clearSession();
-                    navigate({ to: "/" });
-                  }}
-                  className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <LogOut className="size-3.5" aria-hidden />
-                  Sair
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            <div className="flex items-center gap-2">
+              <span className="hidden text-xs text-muted-foreground sm:inline">{email}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  clearSession();
+                  navigate({ to: "/" });
+                }}
+                className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Entrar
-              </Link>
-            )}
-          </div>
+                <LogOut className="size-3.5" aria-hidden />
+                Sair
+              </button>
+            </div>
+          </div>}
+
         </div>
       </header>
       <main className="mx-auto w-full max-w-350 flex-1 px-4 py-6 sm:px-6">{children}</main>

@@ -73,6 +73,11 @@ export function createThread(): Thread {
   return thread;
 }
 
+/** Resumes the most recent conversation, or starts one if none exists yet. */
+export function getOrCreateActiveThread(): Thread {
+  return getThreads()[0] ?? createThread();
+}
+
 export function deleteThread(id: string): void {
   saveThreads(getThreads().filter((t) => t.id !== id));
 }

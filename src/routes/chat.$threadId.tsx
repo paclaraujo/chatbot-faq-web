@@ -21,7 +21,12 @@ import {
   type ChatMessage,
 } from "@/lib/chat-store";
 
+type ChatSearch = { q?: string };
+
 export const Route = createFileRoute("/chat/$threadId")({
+  validateSearch: (search: Record<string, unknown>): ChatSearch => ({
+    q: typeof search.q === "string" ? search.q : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Conversa — Atlas FAQ" },
@@ -51,6 +56,7 @@ const QUICK_PROMPTS = [
 
 function ChatPage() {
   const { threadId } = useParams({ from: "/chat/$threadId" });
+  const search = Route.useSearch();
   const navigate = useNavigate();
   const { threads, hydrated } = useThreads();
   const [input, setInput] = useState("");
@@ -58,6 +64,7 @@ function ChatPage() {
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const autoAskedRef = useRef(false);
 
   const thread = useMemo(() => threads.find((t) => t.id === threadId), [threads, threadId]);
   const messages = thread?.messages ?? [];
@@ -127,6 +134,14 @@ function ChatPage() {
     },
     [threadId, typing],
   );
+
+  useEffect(() => {
+    if (autoAskedRef.current || !thread || !search.q) return;
+    if (thread.messages.length > 0) return;
+    autoAskedRef.current = true;
+    send(search.q);
+    navigate({ to: "/chat/$threadId", params: { threadId }, replace: true });
+  }, [thread, search.q, send, navigate, threadId]);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();

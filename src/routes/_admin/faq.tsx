@@ -316,6 +316,7 @@ function FaqAdmin() {
           </section>
         </div>
       </div>
+
     </AppShell>
   );
 }

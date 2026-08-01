@@ -12,17 +12,21 @@ import { Plus, SendHorizontal, Sparkle, Trash2, Bot, User, HelpCircle } from "lu
 import { AppShell } from "@/components/app-shell";
 import { RichText } from "@/components/rich-text";
 import { useThreads } from "@/hooks/use-threads";
-import { askQuestion, ChatApiError } from "@/lib/api";
+import { ApiError, askQuestion } from "@/lib/api";
 import {
   appendMessages,
   createThread,
   deleteThread,
-  logEvent,
   uid,
   type ChatMessage,
 } from "@/lib/chat-store";
 
+type ChatSearch = { q?: string };
+
 export const Route = createFileRoute("/chat/$threadId")({
+  validateSearch: (search: Record<string, unknown>): ChatSearch => ({
+    q: typeof search.q === "string" ? search.q : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Conversa — Atlas FAQ" },
@@ -52,6 +56,7 @@ const QUICK_PROMPTS = [
 
 function ChatPage() {
   const { threadId } = useParams({ from: "/chat/$threadId" });
+  const search = Route.useSearch();
   const navigate = useNavigate();
   const { threads, hydrated } = useThreads();
   const [input, setInput] = useState("");
@@ -59,6 +64,7 @@ function ChatPage() {
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const autoAskedRef = useRef(false);
 
   const thread = useMemo(() => threads.find((t) => t.id === threadId), [threads, threadId]);
   const messages = thread?.messages ?? [];
@@ -98,13 +104,10 @@ function ChatPage() {
       appendMessages(threadId, [userMessage]);
       setTyping(true);
 
-      const startedAt = performance.now();
       askQuestion(question)
         .then((data) => {
-          const responseMs = Math.round(performance.now() - startedAt);
-          const faqId = data.matched ? String(data.faq.id) : null;
-          const faqQuestion = data.matched ? data.faq.question : null;
-          const category = data.matched ? data.faq.category : "Sem categoria";
+          const faqId = data.matched ? String(data.faq.id) : undefined;
+          const category = data.matched ? data.faq.category : undefined;
           const content = data.matched ? data.answer : data.message;
 
           appendMessages(threadId, [
@@ -113,28 +116,16 @@ function ChatPage() {
               role: "assistant",
               content,
               createdAt: Date.now(),
-              faqId: faqId ?? undefined,
-              category: data.matched ? category : undefined,
+              faqId,
+              category,
               resolved: data.matched,
             },
           ]);
-
-          logEvent({
-            id: uid("evt"),
-            threadId,
-            question,
-            faqId,
-            faqQuestion,
-            category,
-            resolved: data.matched,
-            responseMs,
-            createdAt: Date.now(),
-          });
         })
         .catch((err) => {
           console.error(err);
           setError(
-            err instanceof ChatApiError
+            err instanceof ApiError
               ? err.message
               : "Não foi possível processar a pergunta. Tente novamente.",
           );
@@ -143,6 +134,14 @@ function ChatPage() {
     },
     [threadId, typing],
   );
+
+  useEffect(() => {
+    if (autoAskedRef.current || !thread || !search.q) return;
+    if (thread.messages.length > 0) return;
+    autoAskedRef.current = true;
+    send(search.q);
+    navigate({ to: "/chat/$threadId", params: { threadId }, replace: true });
+  }, [thread, search.q, send, navigate, threadId]);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();

@@ -1,10 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  getThreads,
-  seedDemoData,
-  subscribeToStore,
-  type Thread,
-} from "@/lib/chat-store";
+import { getThreads, subscribeToStore, type Thread } from "@/lib/chat-store";
 
 /** Reads threads from localStorage and keeps them in sync with store updates. */
 export function useThreads() {
@@ -14,7 +9,6 @@ export function useThreads() {
   const refresh = useCallback(() => setThreads(getThreads()), []);
 
   useEffect(() => {
-    seedDemoData();
     refresh();
     setHydrated(true);
     return subscribeToStore(refresh);

@@ -1,47 +1,44 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { createThread, getThreads, isBrowser, seedDemoData } from "@/lib/chat-store";
-import { AppShell } from "@/components/app-shell";
+import { createFileRoute } from "@tanstack/react-router";
+
+import { BenefitsBar } from "@/components/home/benefits-bar";
+import { FaqCta } from "@/components/home/faq-cta";
+import { HeroSection } from "@/components/home/hero-section";
+import { ProductGrid } from "@/components/home/product-grid";
+import { SiteFooter } from "@/components/home/site-footer";
+import { SiteHeader } from "@/components/home/site-header";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Atlas FAQ — Chatbot de perguntas frequentes" },
+      { title: "Invisível — Capa de Invisibilidade™" },
       {
         name: "description",
         content:
-          "Chatbot de FAQ com busca inteligente na base de conhecimento e dashboard analítico de atendimentos.",
+          "Capa de Invisibilidade com tecnologia avançada. Tire suas dúvidas com o assistente de FAQ.",
       },
-      { property: "og:title", content: "Atlas FAQ — Chatbot de perguntas frequentes" },
+      { property: "og:title", content: "Invisível — Capa de Invisibilidade™" },
       {
         property: "og:description",
-        content:
-          "Tire dúvidas em segundos com o chatbot de FAQ e acompanhe as métricas de atendimento no dashboard.",
+        content: "Desapareça com estilo. Fale com o assistente de FAQ para tirar suas dúvidas.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Index,
+  component: Home,
 });
 
-function Index() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isBrowser()) return;
-    seedDemoData();
-    const existing = getThreads();
-    const thread = existing[0] ?? createThread();
-    navigate({ to: "/chat/$threadId", params: { threadId: thread.id }, replace: true });
-  }, [navigate]);
-
+function Home() {
   return (
-    <AppShell>
-      <div className="flex h-[60vh] items-center justify-center">
-        <p className="text-sm text-muted-foreground">Carregando o assistente…</p>
-      </div>
-    </AppShell>
+    <div className="flex min-h-screen flex-col bg-background">
+      <SiteHeader />
+      <main className="flex-1">
+        <HeroSection />
+        <ProductGrid />
+        <BenefitsBar />
+        <FaqCta />
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
-

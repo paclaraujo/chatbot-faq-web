@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -14,12 +14,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Activity, CheckCircle2, Clock, MessageSquare, TriangleAlert } from "lucide-react";
+import { Activity, CheckCircle2, MessageSquare, TriangleAlert } from "lucide-react";
 
 import { AppShell } from "@/components/app-shell";
-import { getEvents, seedDemoData, subscribeToStore, type InteractionEvent } from "@/lib/chat-store";
+import { ApiError, getAnalytics, type AnalyticsDashboard } from "@/lib/api";
+import { clearSession, getToken } from "@/lib/auth-store";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard analítico — Atlas FAQ" },
@@ -55,80 +56,65 @@ const CHART_COLORS = [
   "var(--muted-foreground)",
 ];
 
+const DATE_FORMATTER = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit" });
+const DATETIME_FORMATTER = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 function Dashboard() {
-  const [events, setEvents] = useState<InteractionEvent[]>([]);
+  const navigate = useNavigate();
+  const [analytics, setAnalytics] = useState<AnalyticsDashboard | null>(null);
   const [days, setDays] = useState(14);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    const token = getToken();
+    if (!token) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getAnalytics(token, {
+        timelineDays: days,
+        topLimit: 6,
+        unansweredLimit: 6,
+      });
+      setAnalytics(data);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        clearSession();
+        navigate({ to: "/login", search: { redirect: "/dashboard" } });
+        return;
+      }
+      setError(err instanceof ApiError ? err.message : "Não foi possível carregar as métricas.");
+    } finally {
+      setLoading(false);
+    }
+  }, [days, navigate]);
 
   useEffect(() => {
-    seedDemoData();
-    const refresh = () => setEvents(getEvents());
     refresh();
-    return subscribeToStore(refresh);
-  }, []);
+  }, [refresh]);
 
   const data = useMemo(() => {
-    const since = Date.now() - days * 86_400_000;
-    const scoped = events.filter((e) => e.createdAt >= since);
-    const total = scoped.length;
-    const resolved = scoped.filter((e) => e.resolved).length;
-    const unanswered = total - resolved;
-    const avgMs = total
-      ? Math.round(scoped.reduce((sum, e) => sum + e.responseMs, 0) / total)
-      : 0;
-
-    const byFaq = new Map<string, { count: number; question: string }>();
-    const byCategory = new Map<string, number>();
-    const byMissing = new Map<string, number>();
-    const byDay = new Map<string, { resolvidas: number; semResposta: number }>();
-
-    for (let d = days - 1; d >= 0; d--) {
-      const key = new Date(Date.now() - d * 86_400_000).toISOString().slice(0, 10);
-      byDay.set(key, { resolvidas: 0, semResposta: 0 });
+    if (!analytics) {
+      return { topQuestions: [], categories: [], missing: [], timeline: [] };
     }
+    return {
+      topQuestions: analytics.topQuestions.map((q) => ({ name: q.question, count: q.count })),
+      categories: analytics.byCategory.map((c) => ({ name: c.category, value: c.count })),
+      missing: analytics.unanswered,
+      timeline: analytics.timeline.map((point) => ({
+        date: DATE_FORMATTER.format(new Date(point.date)),
+        count: point.count,
+      })),
+    };
+  }, [analytics]);
 
-    for (const event of scoped) {
-      const key = new Date(event.createdAt).toISOString().slice(0, 10);
-      const bucket = byDay.get(key);
-      if (bucket) {
-        if (event.resolved) bucket.resolvidas += 1;
-        else bucket.semResposta += 1;
-      }
-      if (event.resolved && event.faqId) {
-        const existing = byFaq.get(event.faqId);
-        byFaq.set(event.faqId, {
-          count: (existing?.count ?? 0) + 1,
-          question: event.faqQuestion ?? existing?.question ?? event.faqId,
-        });
-        byCategory.set(event.category, (byCategory.get(event.category) ?? 0) + 1);
-      } else {
-        const q = event.question.trim();
-        byMissing.set(q, (byMissing.get(q) ?? 0) + 1);
-      }
-    }
-
-    const topQuestions = [...byFaq.values()]
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 6)
-      .map(({ question, count }) => ({ name: question, count }));
-
-    const categories = [...byCategory.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([name, value]) => ({ name, value }));
-
-    const missing = [...byMissing.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([question, count]) => ({ question, count }));
-
-    const timeline = [...byDay.entries()].map(([date, value]) => ({
-      date: date.slice(8) + "/" + date.slice(5, 7),
-      ...value,
-    }));
-
-    return { total, resolved, unanswered, avgMs, topQuestions, categories, missing, timeline };
-  }, [events, days]);
-
-  const resolutionRate = data.total ? Math.round((data.resolved / data.total) * 100) : 0;
+  const resolutionRate = analytics ? Math.round(analytics.matchRate * 100) : 0;
 
   return (
     <AppShell>
@@ -160,47 +146,46 @@ function Dashboard() {
           </div>
         </div>
 
+        {error && (
+          <p className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-2.5 text-sm text-destructive">
+            {error}
+          </p>
+        )}
+
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard
             icon={<MessageSquare className="size-4" aria-hidden />}
             label="Consultas realizadas"
-            value={data.total.toLocaleString("pt-BR")}
+            value={(analytics?.totalInteractions ?? 0).toLocaleString("pt-BR")}
             hint={`Últimos ${days} dias`}
           />
           <StatCard
             icon={<CheckCircle2 className="size-4" aria-hidden />}
             label="Taxa de resolução"
             value={`${resolutionRate}%`}
-            hint={`${data.resolved} respondidas pela base`}
+            hint={`${(analytics?.totalMatched ?? 0).toLocaleString("pt-BR")} respondidas pela base`}
           />
           <StatCard
             icon={<TriangleAlert className="size-4" aria-hidden />}
             label="Sem resposta"
-            value={data.unanswered.toLocaleString("pt-BR")}
+            value={(analytics?.totalUnmatched ?? 0).toLocaleString("pt-BR")}
             hint="Oportunidades de novo conteúdo"
           />
           <StatCard
-            icon={<Clock className="size-4" aria-hidden />}
-            label="Tempo médio de resposta"
-            value={`${data.avgMs} ms`}
-            hint="Busca na base de conhecimento"
+            icon={<Activity className="size-4" aria-hidden />}
+            label="Lacunas distintas"
+            value={(analytics?.unanswered.length ?? 0).toLocaleString("pt-BR")}
+            hint="Perguntas diferentes sem resposta"
           />
         </div>
 
-        <Panel
-          title="Evolução das consultas"
-          description="Volume diário separado entre respondidas e sem resposta"
-        >
+        <Panel title="Evolução das consultas" description="Volume diário de interações no período">
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={data.timeline} margin={{ left: -20, right: 8, top: 8 }}>
               <defs>
-                <linearGradient id="grad-ok" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="grad-total" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.45} />
                   <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="grad-miss" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--chart-4)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="var(--chart-4)" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -218,17 +203,10 @@ function Dashboard() {
               <Tooltip content={<ChartTooltip />} />
               <Area
                 type="monotone"
-                dataKey="resolvidas"
+                dataKey="count"
+                name="Consultas"
                 stroke="var(--chart-1)"
-                fill="url(#grad-ok)"
-                animationDuration={700}
-                strokeWidth={2}
-              />
-              <Area
-                type="monotone"
-                dataKey="semResposta"
-                stroke="var(--chart-4)"
-                fill="url(#grad-miss)"
+                fill="url(#grad-total)"
                 animationDuration={700}
                 strokeWidth={2}
               />
@@ -310,7 +288,9 @@ function Dashboard() {
           title="Perguntas sem resposta cadastrada"
           description="Lacunas na base de conhecimento priorizadas por frequência"
         >
-          {data.missing.length === 0 ? (
+          {loading ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">Carregando…</p>
+          ) : data.missing.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
               Nenhuma lacuna registrada no período.
             </p>
@@ -319,6 +299,7 @@ function Dashboard() {
               <thead>
                 <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="py-2 font-medium">Pergunta</th>
+                  <th className="py-2 font-medium">Última vez</th>
                   <th className="py-2 text-right font-medium">Ocorrências</th>
                 </tr>
               </thead>
@@ -326,6 +307,9 @@ function Dashboard() {
                 {data.missing.map((row) => (
                   <tr key={row.question} className="border-b border-border/60 last:border-0">
                     <td className="py-2.5 pr-4 text-foreground">{row.question}</td>
+                    <td className="py-2.5 pr-4 text-muted-foreground">
+                      {DATETIME_FORMATTER.format(new Date(row.lastAskedAt))}
+                    </td>
                     <td className="py-2.5 text-right">
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-destructive/10 px-2.5 py-1 text-xs text-destructive">
                         <Activity className="size-3.5" aria-hidden />

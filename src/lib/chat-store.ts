@@ -1,4 +1,4 @@
-import { FAQ_ENTRIES, type FaqCategory } from "./faq-data";
+import { FAQ_ENTRIES } from "./faq-data";
 
 export type ChatMessage = {
   id: string;
@@ -7,9 +7,8 @@ export type ChatMessage = {
   createdAt: number;
   /** FAQ entry that answered this message, when resolved. */
   faqId?: string;
-  category?: FaqCategory;
+  category?: string;
   resolved?: boolean;
-  suggestions?: string[];
 };
 
 export type Thread = {
@@ -25,9 +24,10 @@ export type InteractionEvent = {
   threadId: string;
   question: string;
   faqId: string | null;
-  category: FaqCategory | "Sem categoria";
+  /** Pergunta canônica da FAQ que respondeu, quando resolvida. */
+  faqQuestion: string | null;
+  category: string;
   resolved: boolean;
-  score: number;
   responseMs: number;
   createdAt: number;
 };
@@ -166,9 +166,9 @@ export function seedDemoData(): void {
           threadId: "seed",
           question: UNANSWERED_SAMPLES[Math.floor(Math.random() * UNANSWERED_SAMPLES.length)],
           faqId: null,
+          faqQuestion: null,
           category: "Sem categoria",
           resolved: false,
-          score: Math.random() * 0.3,
           responseMs: 180 + Math.floor(Math.random() * 320),
           createdAt,
         });
@@ -190,9 +190,9 @@ export function seedDemoData(): void {
         threadId: "seed",
         question: entry.question,
         faqId: entry.id,
+        faqQuestion: entry.question,
         category: entry.category,
         resolved: true,
-        score: 0.7 + Math.random() * 0.3,
         responseMs: 120 + Math.floor(Math.random() * 260),
         createdAt,
       });

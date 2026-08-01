@@ -18,7 +18,6 @@ import { Activity, CheckCircle2, Clock, MessageSquare, TriangleAlert } from "luc
 
 import { AppShell } from "@/components/app-shell";
 import { getEvents, seedDemoData, subscribeToStore, type InteractionEvent } from "@/lib/chat-store";
-import { FAQ_ENTRIES } from "@/lib/faq-data";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -77,7 +76,7 @@ function Dashboard() {
       ? Math.round(scoped.reduce((sum, e) => sum + e.responseMs, 0) / total)
       : 0;
 
-    const byFaq = new Map<string, number>();
+    const byFaq = new Map<string, { count: number; question: string }>();
     const byCategory = new Map<string, number>();
     const byMissing = new Map<string, number>();
     const byDay = new Map<string, { resolvidas: number; semResposta: number }>();
@@ -95,7 +94,11 @@ function Dashboard() {
         else bucket.semResposta += 1;
       }
       if (event.resolved && event.faqId) {
-        byFaq.set(event.faqId, (byFaq.get(event.faqId) ?? 0) + 1);
+        const existing = byFaq.get(event.faqId);
+        byFaq.set(event.faqId, {
+          count: (existing?.count ?? 0) + 1,
+          question: event.faqQuestion ?? existing?.question ?? event.faqId,
+        });
         byCategory.set(event.category, (byCategory.get(event.category) ?? 0) + 1);
       } else {
         const q = event.question.trim();
@@ -103,13 +106,10 @@ function Dashboard() {
       }
     }
 
-    const topQuestions = [...byFaq.entries()]
-      .sort((a, b) => b[1] - a[1])
+    const topQuestions = [...byFaq.values()]
+      .sort((a, b) => b.count - a.count)
       .slice(0, 6)
-      .map(([faqId, count]) => ({
-        name: FAQ_ENTRIES.find((f) => f.id === faqId)?.question ?? faqId,
-        count,
-      }));
+      .map(({ question, count }) => ({ name: question, count }));
 
     const categories = [...byCategory.entries()]
       .sort((a, b) => b[1] - a[1])

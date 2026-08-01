@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { createThread, getThreads, isBrowser, seedDemoData } from "@/lib/chat-store";
+import { createThread, getThreads, isBrowser } from "@/lib/chat-store";
 import { AppShell } from "@/components/app-shell";
 
 export const Route = createFileRoute("/")({
@@ -30,7 +30,6 @@ function Index() {
 
   useEffect(() => {
     if (!isBrowser()) return;
-    seedDemoData();
     const existing = getThreads();
     const thread = existing[0] ?? createThread();
     navigate({ to: "/chat/$threadId", params: { threadId: thread.id }, replace: true });

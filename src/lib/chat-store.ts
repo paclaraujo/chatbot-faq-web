@@ -1,5 +1,3 @@
-import { FAQ_ENTRIES } from "./faq-data";
-
 export type ChatMessage = {
   id: string;
   role: "user" | "assistant";
@@ -19,22 +17,7 @@ export type Thread = {
   messages: ChatMessage[];
 };
 
-export type InteractionEvent = {
-  id: string;
-  threadId: string;
-  question: string;
-  faqId: string | null;
-  /** Pergunta canônica da FAQ que respondeu, quando resolvida. */
-  faqQuestion: string | null;
-  category: string;
-  resolved: boolean;
-  responseMs: number;
-  createdAt: number;
-};
-
 const THREADS_KEY = "faqbot.threads.v1";
-const EVENTS_KEY = "faqbot.events.v1";
-const SEED_KEY = "faqbot.seeded.v1";
 
 export const isBrowser = () => typeof window !== "undefined";
 
@@ -115,92 +98,6 @@ export function appendMessages(threadId: string, messages: ChatMessage[]): void 
       updatedAt: Date.now(),
     };
   });
-}
-
-/* ---------------------------------- events ---------------------------------- */
-
-export function getEvents(): InteractionEvent[] {
-  return read<InteractionEvent[]>(EVENTS_KEY, []);
-}
-
-export function logEvent(event: InteractionEvent): void {
-  write(EVENTS_KEY, [...getEvents(), event]);
-}
-
-export function clearAll(): void {
-  if (!isBrowser()) return;
-  window.localStorage.removeItem(THREADS_KEY);
-  window.localStorage.removeItem(EVENTS_KEY);
-  window.localStorage.removeItem(SEED_KEY);
-  window.dispatchEvent(new CustomEvent("faqbot:store-changed"));
-}
-
-/* ------------------------------- demo seeding ------------------------------- */
-
-const UNANSWERED_SAMPLES = [
-  "Vocês têm loja física em Curitiba?",
-  "Qual o CNPJ da empresa?",
-  "Posso parcelar em 18x sem juros?",
-  "Existe programa de indicação de amigos?",
-  "Vocês entregam no exterior?",
-];
-
-/** Populates 30 days of realistic demo analytics on first visit. */
-export function seedDemoData(): void {
-  if (!isBrowser() || window.localStorage.getItem(SEED_KEY)) return;
-
-  const events: InteractionEvent[] = [];
-  const now = Date.now();
-  const day = 86_400_000;
-  const weights = FAQ_ENTRIES.map((_, i) => 1 + Math.max(0, 6 - i * 0.35));
-
-  for (let d = 29; d >= 0; d--) {
-    const base = 6 + Math.round(Math.sin((29 - d) / 3) * 3) + Math.round((29 - d) / 4);
-    const count = Math.max(3, base + Math.floor(Math.random() * 5));
-    for (let i = 0; i < count; i++) {
-      const unanswered = Math.random() < 0.14;
-      const createdAt = now - d * day + Math.floor(Math.random() * day * 0.9);
-      if (unanswered) {
-        events.push({
-          id: uid("evt"),
-          threadId: "seed",
-          question: UNANSWERED_SAMPLES[Math.floor(Math.random() * UNANSWERED_SAMPLES.length)],
-          faqId: null,
-          faqQuestion: null,
-          category: "Sem categoria",
-          resolved: false,
-          responseMs: 180 + Math.floor(Math.random() * 320),
-          createdAt,
-        });
-        continue;
-      }
-      const total = weights.reduce((a, b) => a + b, 0);
-      let pick = Math.random() * total;
-      let index = 0;
-      for (let k = 0; k < weights.length; k++) {
-        pick -= weights[k];
-        if (pick <= 0) {
-          index = k;
-          break;
-        }
-      }
-      const entry = FAQ_ENTRIES[index];
-      events.push({
-        id: uid("evt"),
-        threadId: "seed",
-        question: entry.question,
-        faqId: entry.id,
-        faqQuestion: entry.question,
-        category: entry.category,
-        resolved: true,
-        responseMs: 120 + Math.floor(Math.random() * 260),
-        createdAt,
-      });
-    }
-  }
-
-  write(EVENTS_KEY, [...events, ...getEvents()]);
-  window.localStorage.setItem(SEED_KEY, "1");
 }
 
 export function subscribeToStore(callback: () => void): () => void {

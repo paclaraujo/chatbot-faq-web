@@ -48,10 +48,10 @@ export const Route = createFileRoute("/chat/$threadId")({
 });
 
 const QUICK_PROMPTS = [
-  "Como redefinir minha senha?",
-  "Qual o prazo de entrega?",
-  "Quais formas de pagamento vocês aceitam?",
-  "Como rastreio meu pedido?",
+  "Por que ainda consigo me ver?",
+  "Funciona em espelhos?",
+  "Meu gato consegue me enxergar?",
+  "A invisibilidade funciona no escuro?",
 ];
 
 function ChatPage() {

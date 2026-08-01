@@ -12,7 +12,7 @@ import { Plus, SendHorizontal, Sparkle, Trash2, Bot, User, HelpCircle } from "lu
 import { AppShell } from "@/components/app-shell";
 import { RichText } from "@/components/rich-text";
 import { useThreads } from "@/hooks/use-threads";
-import { answerQuestion } from "@/lib/bot";
+import { askQuestion, ChatApiError } from "@/lib/api";
 import {
   appendMessages,
   createThread,
@@ -21,7 +21,6 @@ import {
   uid,
   type ChatMessage,
 } from "@/lib/chat-store";
-import { FAQ_CATEGORIES } from "@/lib/faq-data";
 
 export const Route = createFileRoute("/chat/$threadId")({
   head: () => ({
@@ -100,23 +99,23 @@ function ChatPage() {
       setTyping(true);
 
       const startedAt = performance.now();
-      window.setTimeout(() => {
-        try {
-          const answer = answerQuestion(question);
+      askQuestion(question)
+        .then((data) => {
           const responseMs = Math.round(performance.now() - startedAt);
+          const faqId = data.matched ? String(data.faq.id) : null;
+          const faqQuestion = data.matched ? data.faq.question : null;
+          const category = data.matched ? data.faq.category : "Sem categoria";
+          const content = data.matched ? data.answer : data.message;
 
           appendMessages(threadId, [
             {
               id: uid("msg"),
               role: "assistant",
-              content: answer.content,
+              content,
               createdAt: Date.now(),
-              faqId: answer.faqId ?? undefined,
-              category: answer.resolved
-                ? (answer.category as ChatMessage["category"])
-                : undefined,
-              resolved: answer.resolved,
-              suggestions: answer.suggestions,
+              faqId: faqId ?? undefined,
+              category: data.matched ? category : undefined,
+              resolved: data.matched,
             },
           ]);
 
@@ -124,20 +123,23 @@ function ChatPage() {
             id: uid("evt"),
             threadId,
             question,
-            faqId: answer.faqId,
-            category: answer.category,
-            resolved: answer.resolved,
-            score: answer.score,
+            faqId,
+            faqQuestion,
+            category,
+            resolved: data.matched,
             responseMs,
             createdAt: Date.now(),
           });
-        } catch (err) {
+        })
+        .catch((err) => {
           console.error(err);
-          setError("Não foi possível processar a pergunta. Tente novamente.");
-        } finally {
-          setTyping(false);
-        }
-      }, 550);
+          setError(
+            err instanceof ChatApiError
+              ? err.message
+              : "Não foi possível processar a pergunta. Tente novamente.",
+          );
+        })
+        .finally(() => setTyping(false));
     },
     [threadId, typing],
   );
@@ -212,7 +214,7 @@ function ChatPage() {
                 {thread?.title ?? "Nova conversa"}
               </h1>
               <p className="text-xs text-muted-foreground">
-                Base de conhecimento com {FAQ_CATEGORIES.length} categorias
+                Respostas buscadas em tempo real na base de conhecimento
               </p>
             </div>
             <span className="flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-xs text-muted-foreground">
@@ -278,20 +280,6 @@ function ChatPage() {
                         <Sparkle className="size-3.5" aria-hidden />
                         {message.category}
                       </span>
-                    )}
-                    {message.suggestions && message.suggestions.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {message.suggestions.map((suggestion) => (
-                          <button
-                            key={suggestion}
-                            type="button"
-                            onClick={() => send(suggestion)}
-                            className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
-                          >
-                            {suggestion}
-                          </button>
-                        ))}
-                      </div>
                     )}
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { createThread, getOrCreateActiveThread } from "@/lib/chat-store";
+import { createThread, getOrCreateActiveThread } from "@/lib/chatStore";
 
 /** Navigation shortcuts into the public chat, used by the marketing home page. */
 export function useStartChat() {

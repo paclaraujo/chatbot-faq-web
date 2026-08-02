@@ -1,6 +1,6 @@
 import { Activity, CheckCircle2, MessageSquare, TriangleAlert } from "lucide-react";
 
-import { StatCard } from "@/components/dashboard/stat-card";
+import { StatCard } from "@/components/Dashboard/StatCard";
 import type { AnalyticsDashboard } from "@/lib/api";
 
 export function StatsOverview({

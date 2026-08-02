@@ -71,7 +71,7 @@ export function HeroSection() {
           >
           </div>
 
-          <div className="absolute right-0 top-1/2 flex w-56 -translate-y-1/2 translate-x-6 items-start gap-2.5 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-soft sm:translate-x-10">
+          <div className="absolute right-0 top-1/2 flex w-56 -translate-y-1/2 items-start gap-2.5 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-soft sm:translate-x-6 lg:translate-x-10">
             <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
             <p className="text-xs font-semibold leading-snug text-foreground">
               INVISÌVEL. NÃO É MÁGICA.

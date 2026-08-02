@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { BenefitsBar } from "@/components/home/benefits-bar";
-import { FaqCta } from "@/components/home/faq-cta";
-import { HeroSection } from "@/components/home/hero-section";
-import { ProductGrid } from "@/components/home/product-grid";
-import { SiteFooter } from "@/components/home/site-footer";
-import { SiteHeader } from "@/components/home/site-header";
+import { BenefitsBar } from "@/components/Home/BenefitsBar";
+import { FaqCta } from "@/components/Home/FaqCta";
+import { HeroSection } from "@/components/Home/HeroSection";
+import { ProductGrid } from "@/components/Home/ProductGrid";
+import { Footer } from "@/components/Home/Footer";
+import { Header } from "@/components/Home/Header";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,15 +30,15 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-background">
+      <Header />
       <main className="flex-1">
         <HeroSection />
         <ProductGrid />
         <BenefitsBar />
         <FaqCta />
       </main>
-      <SiteFooter />
+      <Footer />
     </div>
   );
 }

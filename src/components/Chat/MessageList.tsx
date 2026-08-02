@@ -1,8 +1,8 @@
 import { Bot, HelpCircle, Sparkle, User } from "lucide-react";
 import type { RefObject } from "react";
 
-import { RichText } from "@/components/rich-text";
-import type { ChatMessage } from "@/lib/chat-store";
+import { RichText } from "@/components/RichText";
+import type { ChatMessage } from "@/lib/chatStore";
 
 export function MessageList({
   messages,

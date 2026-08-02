@@ -1,33 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { AppShell } from "@/components/app-shell";
-import { ErrorBanner } from "@/components/error-banner";
-import { CategoryBreakdownChart } from "@/components/dashboard/category-breakdown-chart";
-import { DateRangePicker } from "@/components/dashboard/date-range-picker";
-import { QueriesTimelineChart } from "@/components/dashboard/queries-timeline-chart";
-import { StatsOverview } from "@/components/dashboard/stats-overview";
-import { TopQuestionsChart } from "@/components/dashboard/top-questions-chart";
-import { UnansweredTable } from "@/components/dashboard/unanswered-table";
-import { useAnalytics } from "@/hooks/use-analytics";
+import { AppShell } from "@/components/AppShell";
+import { ErrorBanner } from "@/components/ErrorBanner";
+import { CategoryBreakdownChart } from "@/components/Dashboard/CategoryBreakdownChart";
+import { DateRangePicker } from "@/components/Dashboard/DateRangePicker";
+import { QueriesTimelineChart } from "@/components/Dashboard/QueriesTimelineChart";
+import { StatsOverview } from "@/components/Dashboard/StatsOverview";
+import { TopQuestionsChart } from "@/components/Dashboard/TopQuestionsChart";
+import { UnansweredTable } from "@/components/Dashboard/UnansweredTable";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export const Route = createFileRoute("/_admin/dashboard")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard analítico — Atlas FAQ" },
-      {
-        name: "description",
-        content:
-          "Indicadores de atendimento do chatbot: volume de consultas, perguntas mais frequentes, lacunas na base e evolução no tempo.",
-      },
-      { property: "og:title", content: "Dashboard analítico — Atlas FAQ" },
-      {
-        property: "og:description",
-        content: "Métricas de uso do chatbot de FAQ e tendências de comportamento dos usuários.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
   component: Dashboard,
 });
 

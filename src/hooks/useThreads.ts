@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getThreads, subscribeToStore, type Thread } from "@/lib/chat-store";
+import { getThreads, subscribeToStore, type Thread } from "@/lib/chatStore";
 
 /** Reads threads from localStorage and keeps them in sync with store updates. */
 export function useThreads() {

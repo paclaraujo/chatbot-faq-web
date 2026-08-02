@@ -1,33 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, type FormEvent, type InputHTMLAttributes, type ReactNode } from "react";
+import { useState, type SubmitEvent, type InputHTMLAttributes, type ReactNode } from "react";
 import { KeyRound, Lock, Mail } from "lucide-react";
 
-import { AppShell } from "@/components/app-shell";
+import { AppShell } from "@/components/AppShell";
 import { ApiError, login } from "@/lib/api";
-import { setSession } from "@/lib/auth-store";
+import { setSession } from "@/lib/authStore";
 
 type LoginSearch = { redirect?: string };
 
 export const Route = createFileRoute("/login")({
   validateSearch: (search: Record<string, unknown>): LoginSearch => ({
     redirect: typeof search.redirect === "string" ? search.redirect : undefined,
-  }),
-  head: () => ({
-    meta: [
-      { title: "Acesso administrativo — Atlas FAQ" },
-      {
-        name: "description",
-        content:
-          "Área restrita do Atlas FAQ: entre com seu e-mail e senha para ver o dashboard analítico e gerenciar a base de perguntas.",
-      },
-      { property: "og:title", content: "Acesso administrativo — Atlas FAQ" },
-      {
-        property: "og:description",
-        content: "Entre na área restrita para acompanhar métricas e cadastrar perguntas do FAQ.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
   }),
   component: LoginPage,
 });
@@ -40,7 +23,7 @@ function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setError(null);

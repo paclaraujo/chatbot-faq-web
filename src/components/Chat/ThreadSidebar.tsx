@@ -1,6 +1,6 @@
 import { Plus, Trash2 } from "lucide-react";
 
-import type { Thread } from "@/lib/chat-store";
+import type { Thread } from "@/lib/chatStore";
 
 export function ThreadSidebar({
   threads,

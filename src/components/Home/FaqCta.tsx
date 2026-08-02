@@ -1,6 +1,6 @@
 import { ChevronRight, MessageCircleQuestion } from "lucide-react";
 
-import { useStartChat } from "@/hooks/use-start-chat";
+import { useStartChat } from "@/hooks/useStartChat";
 
 const SAMPLE_QUESTIONS = [
   "Por que ainda consigo me ver?",

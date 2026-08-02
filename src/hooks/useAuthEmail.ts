@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getAuthEmail, subscribeToAuth } from "@/lib/auth-store";
+import { getAuthEmail, subscribeToAuth } from "@/lib/authStore";
 
 /** Tracks the logged-in user's email, staying in sync across tabs/logout. */
 export function useAuthEmail(): string | null {

@@ -1,7 +1,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-import { ChartTooltip } from "@/components/dashboard/chart-tooltip";
-import { Panel } from "@/components/dashboard/panel";
+import { ChartTooltip } from "@/components/Dashboard/ChartTooltip";
+import { Panel } from "@/components/Dashboard/Panel";
 
 const CHART_COLORS = [
   "var(--chart-1)",

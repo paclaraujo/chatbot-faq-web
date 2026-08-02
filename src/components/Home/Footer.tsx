@@ -1,6 +1,6 @@
 import { Sparkles } from "lucide-react";
 
-export function SiteFooter() {
+export function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/30 py-10">
       <div className="mx-auto grid w-full max-w-350 gap-8 px-4 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">

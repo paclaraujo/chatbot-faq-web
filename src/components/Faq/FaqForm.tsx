@@ -1,7 +1,7 @@
 import { Plus, X } from "lucide-react";
 import type { ReactNode } from "react";
 
-import type { FaqFormState } from "@/hooks/use-faq-admin";
+import type { FaqFormState } from "@/hooks/useFaqAdmin";
 
 export function FaqForm({
   form,

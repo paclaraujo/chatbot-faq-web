@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { useAuthGuard } from "@/hooks/use-auth-guard";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { ApiError, getAnalytics, type AnalyticsDashboard } from "@/lib/api";
-import { getToken } from "@/lib/auth-store";
+import { getToken } from "@/lib/authStore";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit" });
 

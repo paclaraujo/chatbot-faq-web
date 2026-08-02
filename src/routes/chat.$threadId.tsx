@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { AppShell } from "@/components/app-shell";
-import { Composer } from "@/components/chat/composer";
-import { MessageList } from "@/components/chat/message-list";
-import { ThreadSidebar } from "@/components/chat/thread-sidebar";
-import { useThreads } from "@/hooks/use-threads";
+import { AppShell } from "@/components/AppShell";
+import { Composer } from "@/components/Chat/Composer";
+import { MessageList } from "@/components/Chat/MessageList";
+import { ThreadSidebar } from "@/components/Chat/ThreadSidebar";
+import { useThreads } from "@/hooks/useThreads";
 import { ApiError, askQuestion } from "@/lib/api";
-import { appendMessages, createThread, deleteThread, uid, type ChatMessage } from "@/lib/chat-store";
+import { appendMessages, createThread, deleteThread, uid, type ChatMessage } from "@/lib/chatStore";
 
 type ChatSearch = { q?: string };
 

@@ -1,7 +1,8 @@
+
 import { Link } from "@tanstack/react-router";
 import { ShieldQuestion, Sparkles } from "lucide-react";
 
-export function SiteHeader() {
+export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur">
       <div className="mx-auto flex h-20 w-full max-w-350 items-center justify-between px-4 sm:px-6">

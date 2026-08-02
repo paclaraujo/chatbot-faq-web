@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-import { ChartTooltip } from "@/components/dashboard/chart-tooltip";
-import { Panel } from "@/components/dashboard/panel";
+import { ChartTooltip } from "@/components/Dashboard/ChartTooltip";
+import { Panel } from "@/components/Dashboard/Panel";
 
 export function TopQuestionsChart({ data }: { data: { name: string; count: number }[] }) {
   return (

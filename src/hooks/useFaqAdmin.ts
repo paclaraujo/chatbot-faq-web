@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 
-import { useAuthGuard } from "@/hooks/use-auth-guard";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { ApiError, createFaq, deleteFaq, listFaqs, updateFaq, type Faq } from "@/lib/api";
-import { getToken } from "@/lib/auth-store";
+import { getToken } from "@/lib/authStore";
 
 export type FaqFormState = {
   question: string;

@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 
 import { ApiError } from "@/lib/api";
-import { clearSession } from "@/lib/auth-store";
+import { clearSession } from "@/lib/authStore";
 
 /**
  * Returns a handler for API errors that clears a stale session and redirects

@@ -1,5 +1,5 @@
 {
-  "projectName": "chatbot-faq-teste",
+  "projectName": "chatbot-faq-web",
   "mode": "file-router",
   "typescript": true,
   "packageManager": "npm",

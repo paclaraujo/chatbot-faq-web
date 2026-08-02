@@ -1,6 +1,6 @@
 import { Activity } from "lucide-react";
 
-import { Panel } from "@/components/dashboard/panel";
+import { Panel } from "@/components/Dashboard/Panel";
 import type { AnalyticsUnanswered } from "@/lib/api";
 
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("pt-BR", {

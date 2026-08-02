@@ -2,8 +2,8 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { BarChart3, ListChecks, LogOut, MessagesSquare } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { useAuthEmail } from "@/hooks/use-auth-email";
-import { clearSession } from "@/lib/auth-store";
+import { useAuthEmail } from "@/hooks/useAuthEmail";
+import { clearSession } from "@/lib/authStore";
 
 function navLinkClass(active: boolean) {
   return `flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${

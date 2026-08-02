@@ -1,10 +1,7 @@
 {
-  "name": "chatbot-faq-teste",
+  "name": "chatbot-faq-web",
   "private": true,
   "type": "module",
-  "imports": {
-    "#/*": "./src/*"
-  },
   "scripts": {
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",

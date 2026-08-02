@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { AppShell } from "@/components/app-shell";
-import { ErrorBanner } from "@/components/error-banner";
-import { FaqForm } from "@/components/faq/faq-form";
-import { FaqList } from "@/components/faq/faq-list";
-import { useFaqAdmin } from "@/hooks/use-faq-admin";
+import { AppShell } from "@/components/AppShell";
+import { ErrorBanner } from "@/components/ErrorBanner";
+import { FaqForm } from "@/components/Faq/FaqForm";
+import { FaqList } from "@/components/Faq/FaqList";
+import { useFaqAdmin } from "@/hooks/useFaqAdmin";
 
 export const Route = createFileRoute("/_admin/faq")({
   head: () => ({

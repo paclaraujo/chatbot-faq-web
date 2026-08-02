@@ -56,7 +56,7 @@ export function ProductGrid() {
               key={product.name}
               className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-soft"
             >
-              <div className="flex aspect-square items-start justify-end rounded-xl border-2 border-dashed border-border text-muted-foreground/50 relative w-full flex-col gap-3 bg-[repeating-conic-gradient(var(--secondary)_0%_25%,transparent_0%_50%)] bg-size[24px_24px] p-3 text-center shadow-soft">
+              <div className="flex aspect-square items-start justify-end rounded-xl border-2 border-dashed border-border text-muted-foreground/50 relative w-full flex-col gap-3 bg-[repeating-conic-gradient(var(--secondary)_0%_25%,transparent_0%_50%)] bg-size-[24px_24px] p-3 text-center shadow-soft">
                 <span className="bg-brand-gradient py-0.5 px-2 text-xs font-semibold text-primary-foreground shadow-soft rounded-full">Esgotado</span>
               </div>
 

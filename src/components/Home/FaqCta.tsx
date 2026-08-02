@@ -26,7 +26,7 @@ export function FaqCta() {
               <button
                 type="button"
                 onClick={openChat}
-                className="mt-4 flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
+                className="mt-4 flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 cursor-pointer"
               >
                 Ver FAQ
                 <ChevronRight className="size-4" aria-hidden />
@@ -40,7 +40,7 @@ export function FaqCta() {
                 key={question}
                 type="button"
                 onClick={() => askQuestion(question)}
-                className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2.5 text-left text-sm text-foreground shadow-soft transition-colors hover:border-primary hover:bg-secondary"
+                className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2.5 text-left text-sm text-foreground shadow-soft transition-colors hover:border-primary hover:bg-secondary cursor-pointer"
               >
                 <MessageCircleQuestion className="size-4 shrink-0 text-primary" aria-hidden />
                 <span className="line-clamp-2">{question}</span>

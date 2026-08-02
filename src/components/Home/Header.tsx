@@ -14,7 +14,7 @@ export function Header() {
             <span className="block text-lg font-extrabold tracking-tight text-foreground">
               INVISÍVEL
             </span>
-            <span className="block text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            <span className="block text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Tecnologia que esconde
             </span>
           </span>
@@ -23,7 +23,7 @@ export function Header() {
         <div className="flex items-center gap-2.5">
           <Link
             to="/dashboard"
-            className="flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
+            className="flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-xs md:text-sm font-medium text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
           >
             <ShieldQuestion className="size-4" aria-hidden />
             Área Logada

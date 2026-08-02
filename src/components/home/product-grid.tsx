@@ -1,4 +1,4 @@
-import { Crown, ImageOff } from "lucide-react";
+import { Crown } from "lucide-react";
 
 type Product = {
   name: string;

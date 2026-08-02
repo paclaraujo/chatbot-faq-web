@@ -1,8 +1,15 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { BarChart3, ListChecks, LogOut, MessagesSquare } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import { clearSession, getAuthEmail, subscribeToAuth } from "@/lib/auth-store";
+import { useAuthEmail } from "@/hooks/use-auth-email";
+import { clearSession } from "@/lib/auth-store";
+
+function navLinkClass(active: boolean) {
+  return `flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+    active ? "bg-card text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground"
+  }`;
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -10,13 +17,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const isChat = pathname.startsWith("/chat");
   const isDashboard = pathname.startsWith("/dashboard");
   const isFaq = pathname.startsWith("/faq");
-
-  const [email, setEmail] = useState<string | null>(null);
-  useEffect(() => {
-    const refresh = () => setEmail(getAuthEmail());
-    refresh();
-    return subscribeToAuth(refresh);
-  }, []);
+  const email = useAuthEmail();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -38,25 +39,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
           {email && !isChat && <div className="flex items-center gap-3">
             <nav className="flex items-center gap-1 rounded-full border border-border bg-secondary p-1">
-              <Link
-                to="/dashboard"
-                className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  isDashboard
-                    ? "bg-card text-foreground shadow-soft"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
+              <Link to="/dashboard" className={navLinkClass(isDashboard)}>
                 <BarChart3 className="size-4" aria-hidden />
                 Dashboard
               </Link>
-              <Link
-                to="/faq"
-                className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  isFaq
-                    ? "bg-card text-foreground shadow-soft"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
+              <Link to="/faq" className={navLinkClass(isFaq)}>
                 <ListChecks className="size-4" aria-hidden />
                 FAQ
               </Link>

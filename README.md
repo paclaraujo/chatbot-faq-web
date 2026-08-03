@@ -4,6 +4,13 @@ Aplicação web da **Capa de Invisibilidade™**: uma landing page de produto co
 
 O front-end consome uma API externa (não incluída neste repositório) para autenticação, chat e analytics.
 
+Você pode acessar o projeto em produção através desse link: [chatbot-faq-web.vercel.app](chatbot-faq-web.vercel.app). O acesso à área logada é feita através dos seguintes dados de login:
+
+```
+login: admin@invisible.com
+senha: invisible123
+```
+
 ## Sumário
 
 - [Stack](#stack)

@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -14,10 +14,11 @@ export function Footer() {
             </span>
           </span>
           <p className="mt-3 text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Invisível Tech. Todos os direitos reservados.
+            © {new Date().getFullYear()} Invisível Tech. Todos os direitos
+            reservados.
           </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }

@@ -1,1 +1,1 @@
-export { FaqForm } from "./FaqForm";
+export { FaqForm } from './FaqForm'

@@ -1,45 +1,50 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, type SubmitEvent, type InputHTMLAttributes, type ReactNode } from "react";
-import { KeyRound, Lock, Mail } from "lucide-react";
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useState } from 'react'
+import type { SubmitEvent, InputHTMLAttributes, ReactNode } from 'react'
+import { KeyRound, Lock, Mail } from 'lucide-react'
 
-import { AppShell } from "@/components/AppShell";
-import { ApiError, login } from "@/lib/api";
-import { setSession } from "@/lib/authStore";
+import { AppShell } from '@/components/AppShell'
+import { ApiError, login } from '@/lib/api'
+import { setSession } from '@/lib/authStore'
 
-type LoginSearch = { redirect?: string };
+type LoginSearch = { redirect?: string }
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute('/login')({
   validateSearch: (search: Record<string, unknown>): LoginSearch => ({
-    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
+    redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
   }),
   component: LoginPage,
-});
+})
 
 function LoginPage() {
-  const navigate = useNavigate();
-  const search = Route.useSearch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+  const search = Route.useSearch()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   async function onSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
+    event.preventDefault()
+    setLoading(true)
+    setError(null)
     try {
-      const { token } = await login(email, password);
-      setSession(token, email);
-      const target = search.redirect;
-      if (target && target.startsWith("/") && !target.startsWith("/login")) {
-        await navigate({ to: target, replace: true });
+      const { token } = await login(email, password)
+      setSession(token, email)
+      const target = search.redirect
+      if (target && target.startsWith('/') && !target.startsWith('/login')) {
+        await navigate({ to: target, replace: true })
       } else {
-        await navigate({ to: "/dashboard", replace: true });
+        await navigate({ to: '/dashboard', replace: true })
       }
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Não foi possível entrar. Tente novamente.");
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : 'Não foi possível entrar. Tente novamente.',
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -54,13 +59,16 @@ function LoginPage() {
             Área administrativa
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            O chatbot é público. O dashboard analítico e o cadastro de perguntas exigem login.
+            O chatbot é público. O dashboard analítico e o cadastro de perguntas
+            exigem login.
           </p>
 
           <form onSubmit={onSubmit} className="mt-6 space-y-3">
             <IconField
               label="E-mail"
-              icon={<Mail className="size-4 text-muted-foreground" aria-hidden />}
+              icon={
+                <Mail className="size-4 text-muted-foreground" aria-hidden />
+              }
               type="email"
               name="email"
               autoComplete="username"
@@ -71,7 +79,12 @@ function LoginPage() {
 
             <IconField
               label="Senha"
-              icon={<KeyRound className="size-4 text-muted-foreground" aria-hidden />}
+              icon={
+                <KeyRound
+                  className="size-4 text-muted-foreground"
+                  aria-hidden
+                />
+              }
               type="password"
               name="password"
               autoComplete="current-password"
@@ -87,13 +100,13 @@ function LoginPage() {
               disabled={loading || email.length === 0 || password.length === 0}
               className="w-full rounded-xl bg-brand-gradient px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity disabled:opacity-50"
             >
-              {loading ? "Entrando…" : "Entrar"}
+              {loading ? 'Entrando…' : 'Entrar'}
             </button>
           </form>
         </div>
       </div>
     </AppShell>
-  );
+  )
 }
 
 function IconField({
@@ -114,5 +127,5 @@ function IconField({
         />
       </div>
     </div>
-  );
+  )
 }

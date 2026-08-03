@@ -1,1 +1,1 @@
-export { FaqCta } from "./FaqCta";
+export { FaqCta } from './FaqCta'

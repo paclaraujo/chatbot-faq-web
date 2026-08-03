@@ -1,7 +1,7 @@
-import { Plus, X } from "lucide-react";
-import type { ReactNode } from "react";
+import { Plus, X } from 'lucide-react'
+import type { ReactNode } from 'react'
 
-import type { FaqFormState } from "@/hooks/useFaqAdmin";
+import type { FaqFormState } from '@/hooks/useFaqAdmin'
 
 export function FaqForm({
   form,
@@ -13,19 +13,19 @@ export function FaqForm({
   onSubmit,
   onCancel,
 }: {
-  form: FaqFormState;
-  onChange: (form: FaqFormState) => void;
-  categories: string[];
-  editing: boolean;
-  saving: boolean;
-  feedback: string | null;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  onCancel: () => void;
+  form: FaqFormState
+  onChange: (form: FaqFormState) => void
+  categories: string[]
+  editing: boolean
+  saving: boolean
+  feedback: string | null
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  onCancel: () => void
 }) {
   return (
     <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
       <h2 className="text-sm font-semibold text-foreground">
-        {editing ? "Editar pergunta" : "Nova pergunta"}
+        {editing ? 'Editar pergunta' : 'Nova pergunta'}
       </h2>
       <p className="mb-4 text-xs text-muted-foreground">
         Alterações valem imediatamente para o chatbot público.
@@ -73,7 +73,7 @@ export function FaqForm({
             className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-gradient px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
           >
             <Plus className="size-4" aria-hidden />
-            {editing ? "Salvar alterações" : "Cadastrar pergunta"}
+            {editing ? 'Salvar alterações' : 'Cadastrar pergunta'}
           </button>
           {editing && (
             <button
@@ -86,10 +86,12 @@ export function FaqForm({
             </button>
           )}
         </div>
-        {feedback && <p className="text-xs text-muted-foreground">{feedback}</p>}
+        {feedback && (
+          <p className="text-xs text-muted-foreground">{feedback}</p>
+        )}
       </form>
     </section>
-  );
+  )
 }
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
@@ -100,5 +102,5 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
       </span>
       {children}
     </label>
-  );
+  )
 }

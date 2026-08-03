@@ -1,6 +1,6 @@
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from 'lucide-react'
 
-import type { Thread } from "@/lib/chatStore";
+import type { Thread } from '@/lib/chatStore'
 
 export function ThreadSidebar({
   threads,
@@ -9,11 +9,11 @@ export function ThreadSidebar({
   onSelect,
   onDelete,
 }: {
-  threads: Thread[];
-  activeThreadId: string;
-  onCreate: () => void;
-  onSelect: (id: string) => void;
-  onDelete: (id: string) => void;
+  threads: Thread[]
+  activeThreadId: string
+  onCreate: () => void
+  onSelect: (id: string) => void
+  onDelete: (id: string) => void
 }) {
   return (
     <aside className="hidden rounded-2xl border border-border bg-card p-3 shadow-soft lg:block">
@@ -34,7 +34,7 @@ export function ThreadSidebar({
           <li
             key={item.id}
             className={`group flex items-center gap-1 rounded-xl px-2 py-1.5 transition-colors ${
-              item.id === activeThreadId ? "bg-accent" : "hover:bg-secondary"
+              item.id === activeThreadId ? 'bg-accent' : 'hover:bg-secondary'
             }`}
           >
             <button
@@ -42,9 +42,12 @@ export function ThreadSidebar({
               onClick={() => onSelect(item.id)}
               className="min-w-0 flex-1 text-left"
             >
-              <span className="block truncate text-sm text-foreground">{item.title}</span>
+              <span className="block truncate text-sm text-foreground">
+                {item.title}
+              </span>
               <span className="block text-xs text-muted-foreground">
-                {item.messages.filter((m) => m.role === "user").length} perguntas
+                {item.messages.filter((m) => m.role === 'user').length}{' '}
+                perguntas
               </span>
             </button>
             <button
@@ -59,5 +62,5 @@ export function ThreadSidebar({
         ))}
       </ul>
     </aside>
-  );
+  )
 }

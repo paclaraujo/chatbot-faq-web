@@ -1,31 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
-import { AppShell } from "@/components/AppShell";
-import { ErrorBanner } from "@/components/ErrorBanner";
-import { FaqForm } from "@/components/Faq/FaqForm";
-import { FaqList } from "@/components/Faq/FaqList";
-import { useFaqAdmin } from "@/hooks/useFaqAdmin";
+import { AppShell } from '@/components/AppShell'
+import { ErrorBanner } from '@/components/ErrorBanner'
+import { FaqForm } from '@/components/Faq/FaqForm'
+import { FaqList } from '@/components/Faq/FaqList'
+import { useFaqAdmin } from '@/hooks/useFaqAdmin'
 
-export const Route = createFileRoute("/_admin/faq")({
+export const Route = createFileRoute('/_admin/faq')({
   head: () => ({
     meta: [
-      { title: "Base de conhecimento — Atlas FAQ" },
+      { title: 'Base de conhecimento — Atlas FAQ' },
       {
-        name: "description",
+        name: 'description',
         content:
-          "Cadastre, edite e remova as perguntas e respostas usadas pelo chatbot de FAQ, organizadas por categoria.",
+          'Cadastre, edite e remova as perguntas e respostas usadas pelo chatbot de FAQ, organizadas por categoria.',
       },
-      { property: "og:title", content: "Base de conhecimento — Atlas FAQ" },
+      { property: 'og:title', content: 'Base de conhecimento — Atlas FAQ' },
       {
-        property: "og:description",
-        content: "Gerencie as perguntas frequentes respondidas automaticamente pelo assistente.",
+        property: 'og:description',
+        content:
+          'Gerencie as perguntas frequentes respondidas automaticamente pelo assistente.',
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
   }),
   component: FaqAdmin,
-});
+})
 
 function FaqAdmin() {
   const {
@@ -45,7 +46,7 @@ function FaqAdmin() {
     startEdit,
     remove,
     resetForm,
-  } = useFaqAdmin();
+  } = useFaqAdmin()
 
   return (
     <AppShell>
@@ -56,7 +57,8 @@ function FaqAdmin() {
               Base de conhecimento
             </h1>
             <p className="text-sm text-muted-foreground">
-              Cadastre, edite e remova as perguntas respondidas automaticamente pelo chatbot.
+              Cadastre, edite e remova as perguntas respondidas automaticamente
+              pelo chatbot.
             </p>
           </div>
         </div>
@@ -87,5 +89,5 @@ function FaqAdmin() {
         </div>
       </div>
     </AppShell>
-  );
+  )
 }

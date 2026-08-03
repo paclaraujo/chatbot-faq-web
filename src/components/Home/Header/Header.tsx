@@ -1,6 +1,5 @@
-
-import { Link } from "@tanstack/react-router";
-import { ShieldQuestion, Sparkles } from "lucide-react";
+import { Link } from '@tanstack/react-router'
+import { ShieldQuestion, Sparkles } from 'lucide-react'
 
 export function Header() {
   return (
@@ -31,5 +30,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  );
+  )
 }

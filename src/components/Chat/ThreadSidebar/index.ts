@@ -1,1 +1,1 @@
-export { ThreadSidebar } from "./ThreadSidebar";
+export { ThreadSidebar } from './ThreadSidebar'

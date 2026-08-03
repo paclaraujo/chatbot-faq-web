@@ -1,5 +1,5 @@
-import { SendHorizontal } from "lucide-react";
-import type { RefObject } from "react";
+import { SendHorizontal } from 'lucide-react'
+import type { RefObject } from 'react'
 
 export function Composer({
   value,
@@ -9,18 +9,18 @@ export function Composer({
   error,
   textareaRef,
 }: {
-  value: string;
-  onChange: (value: string) => void;
-  onSend: () => void;
-  typing: boolean;
-  error: string | null;
-  textareaRef: RefObject<HTMLTextAreaElement | null>;
+  value: string
+  onChange: (value: string) => void
+  onSend: () => void
+  typing: boolean
+  error: string | null
+  textareaRef: RefObject<HTMLTextAreaElement | null>
 }) {
   return (
     <form
       onSubmit={(event) => {
-        event.preventDefault();
-        onSend();
+        event.preventDefault()
+        onSend()
       }}
       className="border-t border-border px-4 py-3"
     >
@@ -31,9 +31,9 @@ export function Composer({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              onSend();
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              onSend()
             }
           }}
           rows={1}
@@ -52,5 +52,5 @@ export function Composer({
         </button>
       </div>
     </form>
-  );
+  )
 }

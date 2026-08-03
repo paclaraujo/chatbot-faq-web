@@ -1,1 +1,1 @@
-export * from "./useFaqAdmin";
+export * from './useFaqAdmin'

@@ -1,11 +1,26 @@
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 
-import { ChartTooltip } from "@/components/Dashboard/ChartTooltip";
-import { Panel } from "@/components/Dashboard/Panel";
+import { ChartTooltip } from '@/components/Dashboard/ChartTooltip'
+import { Panel } from '@/components/Dashboard/Panel'
 
-export function QueriesTimelineChart({ data }: { data: { date: string; count: number }[] }) {
+export function QueriesTimelineChart({
+  data,
+}: {
+  data: { date: string; count: number }[]
+}) {
   return (
-    <Panel title="Evolução das consultas" description="Volume diário de interações no período">
+    <Panel
+      title="Evolução das consultas"
+      description="Volume diário de interações no período"
+    >
       <ResponsiveContainer width="100%" height={280}>
         <AreaChart data={data} margin={{ left: -20, right: 8, top: 8 }}>
           <defs>
@@ -14,15 +29,19 @@ export function QueriesTimelineChart({ data }: { data: { date: string; count: nu
               <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="var(--border)"
+            vertical={false}
+          />
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+            tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
             tickLine={false}
             axisLine={false}
           />
           <YAxis
-            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+            tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
             tickLine={false}
             axisLine={false}
           />
@@ -39,5 +58,5 @@ export function QueriesTimelineChart({ data }: { data: { date: string; count: nu
         </AreaChart>
       </ResponsiveContainer>
     </Panel>
-  );
+  )
 }

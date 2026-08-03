@@ -1,1 +1,1 @@
-export { BenefitsBar } from "./BenefitsBar";
+export { BenefitsBar } from './BenefitsBar'

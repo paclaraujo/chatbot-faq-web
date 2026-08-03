@@ -1,5 +1,6 @@
 import { Pencil, Search, Trash2 } from 'lucide-react'
 
+import { Skeleton } from '@/components/Skeleton'
 import type { Faq } from '@/lib/api'
 
 export function FaqList({
@@ -42,9 +43,21 @@ export function FaqList({
       </div>
 
       {loading ? (
-        <p className="py-10 text-center text-sm text-muted-foreground">
-          Carregando…
-        </p>
+        <ul className="divide-y divide-border" aria-label="Carregando…">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <li key={index} className="flex items-start gap-3 py-3">
+              <div className="min-w-0 flex-1 space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-4 w-16 rounded-full" />
+              </div>
+              <div className="flex shrink-0 gap-1">
+                <Skeleton className="size-8 rounded-lg" />
+                <Skeleton className="size-8 rounded-lg" />
+              </div>
+            </li>
+          ))}
+        </ul>
       ) : filtered.length === 0 ? (
         <p className="py-10 text-center text-sm text-muted-foreground">
           Nenhuma pergunta encontrada.

@@ -1,5 +1,6 @@
 import { ChevronRight, MessageCircleQuestion } from 'lucide-react'
 
+import { Button } from '@/components/Button'
 import { useStartChat } from '@/hooks/useStartChat'
 
 const SAMPLE_QUESTIONS = [
@@ -25,14 +26,10 @@ export function FaqCta() {
                 Pergunte ao nosso assistente e encontre respostas para as
                 dúvidas mais comuns sobre a Capa de Invisibilidade.
               </p>
-              <button
-                type="button"
-                onClick={openChat}
-                className="mt-4 flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90 cursor-pointer"
-              >
+              <Button onClick={openChat} pill className="mt-4">
                 Ver FAQ
                 <ChevronRight className="size-4" aria-hidden />
-              </button>
+              </Button>
             </div>
           </div>
 

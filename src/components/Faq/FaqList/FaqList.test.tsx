@@ -50,9 +50,10 @@ describe('FaqList', () => {
     expect(screen.getByText('Funciona no escuro?')).toBeInTheDocument()
   })
 
-  it('shows a loading state', () => {
+  it('shows a skeleton placeholder while loading', () => {
     setup({ loading: true })
-    expect(screen.getByText('Carregando…')).toBeInTheDocument()
+    expect(screen.getByLabelText('Carregando…')).toBeInTheDocument()
+    expect(screen.queryByText('Como troco a senha?')).not.toBeInTheDocument()
   })
 
   it('shows an empty state when the filtered list is empty', () => {

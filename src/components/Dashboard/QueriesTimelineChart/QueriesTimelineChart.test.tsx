@@ -24,4 +24,11 @@ describe('QueriesTimelineChart', () => {
     render(<QueriesTimelineChart data={[]} />)
     expect(screen.getByText('Evolução das consultas')).toBeInTheDocument()
   })
+
+  it('renders a skeleton instead of the chart while loading', () => {
+    const { container } = render(<QueriesTimelineChart data={[]} loading />)
+    expect(screen.getByText('Evolução das consultas')).toBeInTheDocument()
+    expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
+    expect(container.querySelector('.recharts-wrapper')).not.toBeInTheDocument()
+  })
 })

@@ -25,6 +25,13 @@ describe('TopQuestionsChart', () => {
     expect(screen.getByText('Perguntas mais frequentes')).toBeInTheDocument()
   })
 
+  it('renders a skeleton instead of the chart while loading', () => {
+    const { container } = render(<TopQuestionsChart data={[]} loading />)
+    expect(screen.getByText('Perguntas mais frequentes')).toBeInTheDocument()
+    expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
+    expect(container.querySelector('.recharts-wrapper')).not.toBeInTheDocument()
+  })
+
   it('renders without crashing when a question name is very long', () => {
     render(
       <TopQuestionsChart

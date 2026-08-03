@@ -4,6 +4,7 @@ import type { SubmitEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { KeyRound, Lock, Mail } from 'lucide-react'
 
 import { AppShell } from '@/components/AppShell'
+import { Button } from '@/components/Button'
 import { ApiError, login } from '@/lib/api'
 import { setSession } from '@/lib/authStore'
 
@@ -95,13 +96,13 @@ function LoginPage() {
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
-            <button
+            <Button
               type="submit"
               disabled={loading || email.length === 0 || password.length === 0}
-              className="w-full rounded-xl bg-brand-gradient px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity disabled:opacity-50"
+              fullWidth
             >
               {loading ? 'Entrando…' : 'Entrar'}
-            </button>
+            </Button>
           </form>
         </div>
       </div>

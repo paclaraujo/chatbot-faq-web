@@ -121,13 +121,30 @@ describe('useFaqAdmin', () => {
     expect(createFaq).not.toHaveBeenCalled()
   })
 
-  it('startEdit populates the form and onSubmit updates the existing entry', async () => {
+  it('openCreate resets the form and opens it', async () => {
+    const { result } = renderHook(() => useFaqAdmin())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    act(() => result.current.startEdit(FAQS[0]))
+    act(() => result.current.openCreate())
+
+    expect(result.current.isFormOpen).toBe(true)
+    expect(result.current.editingId).toBeNull()
+    expect(result.current.form).toEqual({
+      question: '',
+      answer: '',
+      category: '',
+    })
+  })
+
+  it('startEdit populates the form, opens it and onSubmit updates the existing entry', async () => {
     vi.mocked(updateFaq).mockResolvedValue(FAQS[0])
     const { result } = renderHook(() => useFaqAdmin())
     await waitFor(() => expect(result.current.loading).toBe(false))
 
     act(() => result.current.startEdit(FAQS[0]))
     expect(result.current.editingId).toBe(1)
+    expect(result.current.isFormOpen).toBe(true)
     expect(result.current.form).toEqual({
       question: FAQS[0].question,
       answer: FAQS[0].answer,
@@ -146,29 +163,32 @@ describe('useFaqAdmin', () => {
     expect(result.current.feedback).toBe('Pergunta atualizada.')
   })
 
-  it('remove asks for confirmation and deletes on accept', async () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
+  it('requestDelete stages an entry and confirmDelete removes it', async () => {
     vi.mocked(deleteFaq).mockResolvedValue(undefined)
     const { result } = renderHook(() => useFaqAdmin())
     await waitFor(() => expect(result.current.loading).toBe(false))
 
+    act(() => result.current.requestDelete(FAQS[0]))
+    expect(result.current.pendingDelete).toEqual(FAQS[0])
+    expect(deleteFaq).not.toHaveBeenCalled()
+
     await act(async () => {
-      await result.current.remove(FAQS[0])
+      await result.current.confirmDelete()
     })
 
     expect(deleteFaq).toHaveBeenCalledWith('tok', 1)
     expect(result.current.feedback).toBe('Pergunta removida da base.')
+    expect(result.current.pendingDelete).toBeNull()
   })
 
-  it('remove does nothing when the user cancels the confirmation', async () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(false)
+  it('cancelDelete clears the staged entry without deleting it', async () => {
     const { result } = renderHook(() => useFaqAdmin())
     await waitFor(() => expect(result.current.loading).toBe(false))
 
-    await act(async () => {
-      await result.current.remove(FAQS[0])
-    })
+    act(() => result.current.requestDelete(FAQS[0]))
+    act(() => result.current.cancelDelete())
 
+    expect(result.current.pendingDelete).toBeNull()
     expect(deleteFaq).not.toHaveBeenCalled()
   })
 

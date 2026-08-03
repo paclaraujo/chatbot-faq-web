@@ -40,13 +40,14 @@ function Dashboard() {
           analytics={analytics}
           days={days}
           resolutionRate={resolutionRate}
+          loading={loading}
         />
 
-        <QueriesTimelineChart data={data.timeline} />
+        <QueriesTimelineChart data={data.timeline} loading={loading} />
 
         <div className="grid gap-4 lg:grid-cols-2">
-          <TopQuestionsChart data={data.topQuestions} />
-          <CategoryBreakdownChart data={data.categories} />
+          <TopQuestionsChart data={data.topQuestions} loading={loading} />
+          <CategoryBreakdownChart data={data.categories} loading={loading} />
         </div>
 
         <UnansweredTable rows={data.missing} loading={loading} />

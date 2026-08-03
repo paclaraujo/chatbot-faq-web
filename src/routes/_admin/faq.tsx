@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Plus } from 'lucide-react'
 
 import { AppShell } from '@/components/AppShell'
+import { Button } from '@/components/Button'
+import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ErrorBanner } from '@/components/ErrorBanner'
 import { FaqForm } from '@/components/Faq/FaqForm'
 import { FaqList } from '@/components/Faq/FaqList'
@@ -42,9 +45,14 @@ function FaqAdmin() {
     error,
     loading,
     saving,
+    isFormOpen,
+    openCreate,
+    pendingDelete,
     onSubmit,
     startEdit,
-    remove,
+    requestDelete,
+    confirmDelete,
+    cancelDelete,
     resetForm,
   } = useFaqAdmin()
 
@@ -61,32 +69,48 @@ function FaqAdmin() {
               pelo chatbot.
             </p>
           </div>
+          <Button onClick={openCreate}>
+            <Plus className="size-4" aria-hidden />
+            Nova pergunta
+          </Button>
         </div>
 
         {error && <ErrorBanner message={error} />}
 
-        <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
-          <FaqForm
-            form={form}
-            onChange={setForm}
-            categories={categories}
-            editing={editingId !== null}
-            saving={saving}
-            feedback={feedback}
-            onSubmit={onSubmit}
-            onCancel={resetForm}
-          />
+        <FaqList
+          entries={entries}
+          filtered={filtered}
+          filter={filter}
+          onFilterChange={setFilter}
+          loading={loading}
+          onEdit={startEdit}
+          onDelete={requestDelete}
+        />
 
-          <FaqList
-            entries={entries}
-            filtered={filtered}
-            filter={filter}
-            onFilterChange={setFilter}
-            loading={loading}
-            onEdit={startEdit}
-            onDelete={remove}
-          />
-        </div>
+        <FaqForm
+          open={isFormOpen}
+          form={form}
+          onChange={setForm}
+          categories={categories}
+          editing={editingId !== null}
+          saving={saving}
+          feedback={feedback}
+          onSubmit={onSubmit}
+          onCancel={resetForm}
+        />
+
+        <ConfirmDialog
+          open={pendingDelete !== null}
+          title="Remover pergunta"
+          message={
+            pendingDelete
+              ? `Remover a pergunta "${pendingDelete.question}"? Essa ação não pode ser desfeita.`
+              : ''
+          }
+          confirmLabel="Remover"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
       </div>
     </AppShell>
   )

@@ -7,6 +7,8 @@ import {
   Zap,
 } from 'lucide-react'
 
+import { Button } from '@/components/Button'
+
 const FEATURES = [
   { icon: Eye, label: '100% Invisível' },
   { icon: Zap, label: 'Tecnologia Avançada' },
@@ -51,20 +53,14 @@ export function HeroSection() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="#produtos"
-              className="flex items-center gap-2 rounded-full bg-brand-gradient px-5 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
-            >
+            <Button href="#produtos" pill size="lg">
               <ShoppingBag className="size-4" aria-hidden />
               Comprar agora
-            </a>
-            <a
-              href="#duvidas"
-              className="flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-            >
+            </Button>
+            <Button href="#duvidas" variant="secondary" pill size="lg">
               Saiba mais
               <ArrowDown className="size-4" aria-hidden />
-            </a>
+            </Button>
           </div>
         </div>
 

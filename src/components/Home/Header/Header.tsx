@@ -1,6 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import { ShieldQuestion, Sparkles } from 'lucide-react'
 
+import { buttonClasses } from '@/components/Button'
+
 export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur">
@@ -22,7 +24,7 @@ export function Header() {
         <div className="flex items-center gap-2.5">
           <Link
             to="/dashboard"
-            className="flex items-center gap-1.5 rounded-full bg-brand-gradient px-4 py-2 text-xs md:text-sm font-medium text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
+            className={buttonClasses({ pill: true, size: 'sm' })}
           >
             <ShieldQuestion className="size-4" aria-hidden />
             Área Logada

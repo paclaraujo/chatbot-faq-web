@@ -2,6 +2,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 
 import { ChartTooltip } from '@/components/Dashboard/ChartTooltip'
 import { Panel } from '@/components/Dashboard/Panel'
+import { Skeleton } from '@/components/Skeleton'
 
 const CHART_COLORS = [
   'var(--chart-1)',
@@ -14,9 +15,29 @@ const CHART_COLORS = [
 
 export function CategoryBreakdownChart({
   data,
+  loading,
 }: {
   data: { name: string; value: number }[]
+  loading?: boolean
 }) {
+  if (loading) {
+    return (
+      <Panel
+        title="Distribuição por categoria"
+        description="Participação de cada área da base de conhecimento"
+      >
+        <div className="flex h-75 items-center justify-center">
+          <Skeleton className="size-50 rounded-full" />
+        </div>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton key={index} className="h-4 w-full" />
+          ))}
+        </div>
+      </Panel>
+    )
+  }
+
   return (
     <Panel
       title="Distribuição por categoria"

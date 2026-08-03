@@ -38,4 +38,18 @@ describe('StatsOverview', () => {
     expect(screen.getAllByText('0').length).toBeGreaterThan(0)
     expect(screen.getByText('Últimos 7 dias')).toBeInTheDocument()
   })
+
+  it('renders skeleton cards instead of values while loading', () => {
+    render(
+      <StatsOverview
+        analytics={ANALYTICS}
+        days={14}
+        resolutionRate={75}
+        loading
+      />,
+    )
+
+    expect(screen.queryByText('1.200')).not.toBeInTheDocument()
+    expect(screen.queryByText('Últimos 14 dias')).not.toBeInTheDocument()
+  })
 })

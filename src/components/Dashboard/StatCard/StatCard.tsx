@@ -1,16 +1,33 @@
 import type { ReactNode } from 'react'
 
+import { Skeleton } from '@/components/Skeleton'
+
 export function StatCard({
   icon,
   label,
   value,
   hint,
+  loading,
 }: {
   icon: ReactNode
   label: string
   value: string
   hint: string
+  loading?: boolean
 }) {
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-8 rounded-xl" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+        <Skeleton className="mt-3 h-8 w-16" />
+        <Skeleton className="mt-2 h-3 w-32" />
+      </div>
+    )
+  }
+
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
       <div className="flex items-center gap-2 text-muted-foreground">

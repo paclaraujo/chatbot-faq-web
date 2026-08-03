@@ -24,6 +24,8 @@ export function useFaqAdmin() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [pendingDelete, setPendingDelete] = useState<Faq | null>(null)
 
   const refresh = useCallback(async () => {
     const token = getToken()
@@ -67,6 +69,14 @@ export function useFaqAdmin() {
   function resetForm() {
     setForm(EMPTY_FORM)
     setEditingId(null)
+    setIsFormOpen(false)
+  }
+
+  function openCreate() {
+    setForm(EMPTY_FORM)
+    setEditingId(null)
+    setFeedback(null)
+    setIsFormOpen(true)
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -113,12 +123,22 @@ export function useFaqAdmin() {
       category: entry.category,
     })
     setFeedback(null)
+    setIsFormOpen(true)
   }
 
-  async function remove(entry: Faq) {
+  function requestDelete(entry: Faq) {
+    setPendingDelete(entry)
+  }
+
+  function cancelDelete() {
+    setPendingDelete(null)
+  }
+
+  async function confirmDelete() {
+    const entry = pendingDelete
+    if (!entry) return
     const token = getToken()
     if (!token) return
-    if (!window.confirm(`Remover a pergunta "${entry.question}"?`)) return
 
     setError(null)
     try {
@@ -133,6 +153,8 @@ export function useFaqAdmin() {
           ? err.message
           : 'Não foi possível remover a pergunta.',
       )
+    } finally {
+      setPendingDelete(null)
     }
   }
 
@@ -149,9 +171,14 @@ export function useFaqAdmin() {
     error,
     loading,
     saving,
+    isFormOpen,
+    openCreate,
+    pendingDelete,
     onSubmit,
     startEdit,
-    remove,
+    requestDelete,
+    confirmDelete,
+    cancelDelete,
     resetForm,
   }
 }

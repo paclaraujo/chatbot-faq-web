@@ -25,4 +25,11 @@ describe('CategoryBreakdownChart', () => {
     render(<CategoryBreakdownChart data={[]} />)
     expect(screen.getByText('Distribuição por categoria')).toBeInTheDocument()
   })
+
+  it('renders a skeleton instead of the chart while loading', () => {
+    const { container } = render(<CategoryBreakdownChart data={[]} loading />)
+    expect(screen.getByText('Distribuição por categoria')).toBeInTheDocument()
+    expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
+    expect(container.querySelector('.recharts-wrapper')).not.toBeInTheDocument()
+  })
 })

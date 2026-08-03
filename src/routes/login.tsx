@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import type { SubmitEvent, InputHTMLAttributes, ReactNode } from 'react'
+import type { SubmitEvent } from 'react'
 import { KeyRound, Lock, Mail } from 'lucide-react'
 
 import { AppShell } from '@/components/AppShell'
 import { Button } from '@/components/Button'
+import { Input } from '@/components/Input'
 import { ApiError, login } from '@/lib/api'
 import { setSession } from '@/lib/authStore'
 
@@ -65,7 +66,7 @@ function LoginPage() {
           </p>
 
           <form onSubmit={onSubmit} className="mt-6 space-y-3">
-            <IconField
+            <Input
               label="E-mail"
               icon={
                 <Mail className="size-4 text-muted-foreground" aria-hidden />
@@ -78,7 +79,7 @@ function LoginPage() {
               placeholder="voce@empresa.com"
             />
 
-            <IconField
+            <Input
               label="Senha"
               icon={
                 <KeyRound
@@ -92,9 +93,8 @@ function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              error={error}
             />
-
-            {error && <p className="text-sm text-destructive">{error}</p>}
 
             <Button
               type="submit"
@@ -107,26 +107,5 @@ function LoginPage() {
         </div>
       </div>
     </AppShell>
-  )
-}
-
-function IconField({
-  label,
-  icon,
-  ...inputProps
-}: { label: string; icon: ReactNode } & InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <div>
-      <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {label}
-      </label>
-      <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3">
-        {icon}
-        <input
-          {...inputProps}
-          className="w-full bg-transparent py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
-        />
-      </div>
-    </div>
   )
 }

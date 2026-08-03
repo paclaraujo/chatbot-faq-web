@@ -37,7 +37,7 @@ export function FaqList({
             value={filter}
             onChange={(e) => onFilterChange(e.target.value)}
             placeholder="Filtrar…"
-            className="w-40 bg-transparent py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            className="w-40 bg-transparent py-2 text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-sm"
           />
         </div>
       </div>

@@ -29,7 +29,7 @@ export function Input(props: InputProps) {
   const errorId = `${inputId}-error`
 
   const fieldClasses = [
-    'w-full bg-transparent py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground',
+    'w-full bg-transparent py-2.5 text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-sm',
     multiline ? 'resize-y' : '',
     className ?? '',
   ]

@@ -40,7 +40,7 @@ export function Composer({
           maxLength={500}
           placeholder="Digite sua pergunta…"
           aria-label="Pergunta"
-          className="max-h-32 min-h-9 flex-1 resize-none bg-transparent py-1.5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+          className="max-h-32 min-h-9 flex-1 resize-none bg-transparent py-1.5 text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-sm"
         />
         <button
           type="submit"

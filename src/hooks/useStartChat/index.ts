@@ -1,1 +1,1 @@
-export * from "./useStartChat";
+export * from './useStartChat'

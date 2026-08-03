@@ -1,1 +1,1 @@
-export { UnansweredTable } from "./UnansweredTable";
+export { UnansweredTable } from './UnansweredTable'

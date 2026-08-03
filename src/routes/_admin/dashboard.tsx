@@ -1,21 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
-import { AppShell } from "@/components/AppShell";
-import { ErrorBanner } from "@/components/ErrorBanner";
-import { CategoryBreakdownChart } from "@/components/Dashboard/CategoryBreakdownChart";
-import { DateRangePicker } from "@/components/Dashboard/DateRangePicker";
-import { QueriesTimelineChart } from "@/components/Dashboard/QueriesTimelineChart";
-import { StatsOverview } from "@/components/Dashboard/StatsOverview";
-import { TopQuestionsChart } from "@/components/Dashboard/TopQuestionsChart";
-import { UnansweredTable } from "@/components/Dashboard/UnansweredTable";
-import { useAnalytics } from "@/hooks/useAnalytics";
+import { AppShell } from '@/components/AppShell'
+import { ErrorBanner } from '@/components/ErrorBanner'
+import { CategoryBreakdownChart } from '@/components/Dashboard/CategoryBreakdownChart'
+import { DateRangePicker } from '@/components/Dashboard/DateRangePicker'
+import { QueriesTimelineChart } from '@/components/Dashboard/QueriesTimelineChart'
+import { StatsOverview } from '@/components/Dashboard/StatsOverview'
+import { TopQuestionsChart } from '@/components/Dashboard/TopQuestionsChart'
+import { UnansweredTable } from '@/components/Dashboard/UnansweredTable'
+import { useAnalytics } from '@/hooks/useAnalytics'
 
-export const Route = createFileRoute("/_admin/dashboard")({
+export const Route = createFileRoute('/_admin/dashboard')({
   component: Dashboard,
-});
+})
 
 function Dashboard() {
-  const { analytics, data, days, setDays, loading, error, resolutionRate } = useAnalytics();
+  const { analytics, data, days, setDays, loading, error, resolutionRate } =
+    useAnalytics()
 
   return (
     <AppShell>
@@ -26,7 +27,8 @@ function Dashboard() {
               Dashboard analítico
             </h1>
             <p className="text-sm text-muted-foreground">
-              Métricas de utilização do chatbot e tendências de comportamento dos usuários.
+              Métricas de utilização do chatbot e tendências de comportamento
+              dos usuários.
             </p>
           </div>
           <DateRangePicker days={days} onChange={setDays} />
@@ -34,17 +36,22 @@ function Dashboard() {
 
         {error && <ErrorBanner message={error} />}
 
-        <StatsOverview analytics={analytics} days={days} resolutionRate={resolutionRate} />
+        <StatsOverview
+          analytics={analytics}
+          days={days}
+          resolutionRate={resolutionRate}
+          loading={loading}
+        />
 
-        <QueriesTimelineChart data={data.timeline} />
+        <QueriesTimelineChart data={data.timeline} loading={loading} />
 
         <div className="grid gap-4 lg:grid-cols-2">
-          <TopQuestionsChart data={data.topQuestions} />
-          <CategoryBreakdownChart data={data.categories} />
+          <TopQuestionsChart data={data.topQuestions} loading={loading} />
+          <CategoryBreakdownChart data={data.categories} loading={loading} />
         </div>
 
         <UnansweredTable rows={data.missing} loading={loading} />
       </div>
     </AppShell>
-  );
+  )
 }

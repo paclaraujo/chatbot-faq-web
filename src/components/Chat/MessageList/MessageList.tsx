@@ -1,8 +1,8 @@
-import { Bot, HelpCircle, Sparkle, User } from "lucide-react";
-import type { RefObject } from "react";
+import { Bot, HelpCircle, Sparkle, User } from 'lucide-react'
+import type { RefObject } from 'react'
 
-import { RichText } from "@/components/RichText";
-import type { ChatMessage } from "@/lib/chatStore";
+import { RichText } from '@/components/RichText'
+import type { ChatMessage } from '@/lib/chatStore'
 
 export function MessageList({
   messages,
@@ -11,11 +11,11 @@ export function MessageList({
   onQuickPrompt,
   bottomRef,
 }: {
-  messages: ChatMessage[];
-  typing: boolean;
-  quickPrompts: string[];
-  onQuickPrompt: (prompt: string) => void;
-  bottomRef: RefObject<HTMLDivElement | null>;
+  messages: ChatMessage[]
+  typing: boolean
+  quickPrompts: string[]
+  onQuickPrompt: (prompt: string) => void
+  bottomRef: RefObject<HTMLDivElement | null>
 }) {
   return (
     <div className="flex-1 space-y-5 overflow-y-auto px-5 py-6">
@@ -24,9 +24,12 @@ export function MessageList({
           <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-brand-gradient text-primary-foreground">
             <Bot className="size-6" aria-hidden />
           </span>
-          <h2 className="mt-4 text-lg font-semibold text-foreground">Como posso ajudar hoje?</h2>
+          <h2 className="mt-4 text-lg font-semibold text-foreground">
+            Como posso ajudar hoje?
+          </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Pergunte em linguagem natural — busco a resposta mais próxima na base de FAQ.
+            Pergunte em linguagem natural — busco a resposta mais próxima na
+            base de FAQ.
           </p>
           <div className="mt-5 grid gap-2 sm:grid-cols-2">
             {quickPrompts.map((prompt) => (
@@ -44,7 +47,7 @@ export function MessageList({
       )}
 
       {messages.map((message) =>
-        message.role === "user" ? (
+        message.role === 'user' ? (
           <div key={message.id} className="flex justify-end gap-3">
             <div className="max-w-[75%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
               {message.content}
@@ -97,5 +100,5 @@ export function MessageList({
       )}
       <div ref={bottomRef} />
     </div>
-  );
+  )
 }

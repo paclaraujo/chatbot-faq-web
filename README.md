@@ -69,18 +69,18 @@ npm run preview
 
 ## Scripts disponíveis
 
-| Script                  | Descrição                                              |
-| ----------------------- | ------------------------------------------------------- |
-| `npm run dev`            | Inicia o servidor de desenvolvimento (Vite) na porta 3000 |
-| `npm run build`          | Gera o build de produção em `dist/`                      |
-| `npm run preview`        | Serve o build de produção localmente                     |
-| `npm run generate-routes`| Gera manualmente o `routeTree.gen.ts` a partir de `src/routes` |
-| `npm run lint`           | Roda o ESLint                                            |
-| `npm run format`         | Formata o código com Prettier e corrige lint automaticamente |
-| `npm run check`          | Verifica formatação sem alterar arquivos                 |
-| `npm run test`           | Roda a suíte de testes (Vitest) uma vez                  |
-| `npm run test:watch`     | Roda os testes em modo watch                             |
-| `npm run coverage`       | Roda os testes com relatório de cobertura                |
+| Script                    | Descrição                                                      |
+| ------------------------- | -------------------------------------------------------------- |
+| `npm run dev`             | Inicia o servidor de desenvolvimento (Vite) na porta 3000      |
+| `npm run build`           | Gera o build de produção em `dist/`                            |
+| `npm run preview`         | Serve o build de produção localmente                           |
+| `npm run generate-routes` | Gera manualmente o `routeTree.gen.ts` a partir de `src/routes` |
+| `npm run lint`            | Roda o ESLint                                                  |
+| `npm run format`          | Formata o código com Prettier e corrige lint automaticamente   |
+| `npm run check`           | Verifica formatação sem alterar arquivos                       |
+| `npm run test`            | Roda a suíte de testes (Vitest) uma vez                        |
+| `npm run test:watch`      | Roda os testes em modo watch                                   |
+| `npm run coverage`        | Roda os testes com relatório de cobertura                      |
 
 ## Estrutura do projeto
 

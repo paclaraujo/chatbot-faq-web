@@ -1,1 +1,1 @@
-export { QueriesTimelineChart } from "./QueriesTimelineChart";
+export { QueriesTimelineChart } from './QueriesTimelineChart'

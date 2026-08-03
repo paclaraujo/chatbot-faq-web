@@ -1,1 +1,1 @@
-export { ChartTooltip } from "./ChartTooltip";
+export { ChartTooltip } from './ChartTooltip'

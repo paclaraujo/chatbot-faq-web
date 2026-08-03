@@ -1,10 +1,19 @@
-import { ArrowDown, Eye, Feather, ShoppingBag, Sparkles, Zap } from "lucide-react";
+import {
+  ArrowDown,
+  Eye,
+  Feather,
+  ShoppingBag,
+  Sparkles,
+  Zap,
+} from 'lucide-react'
+
+import { Button } from '@/components/Button'
 
 const FEATURES = [
-  { icon: Eye, label: "100% Invisível" },
-  { icon: Zap, label: "Tecnologia Avançada" },
-  { icon: Feather, label: "Leve e Confortável" },
-];
+  { icon: Eye, label: '100% Invisível' },
+  { icon: Zap, label: 'Tecnologia Avançada' },
+  { icon: Feather, label: 'Leve e Confortável' },
+]
 
 export function HeroSection() {
   return (
@@ -23,36 +32,35 @@ export function HeroSection() {
           </h1>
 
           <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
-            Desapareça com estilo. Tecnologia avançada para total camuflagem em qualquer
-            situação.
+            Desapareça com estilo. Tecnologia avançada para total camuflagem em
+            qualquer situação.
           </p>
 
           <div className="mt-7 grid grid-cols-3 gap-3 sm:max-w-md">
             {FEATURES.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex flex-col items-center gap-2 text-center">
+              <div
+                key={label}
+                className="flex flex-col items-center gap-2 text-center"
+              >
                 <span className="flex size-12 items-center justify-center rounded-2xl bg-card text-primary shadow-soft">
                   <Icon className="size-5" aria-hidden />
                 </span>
-                <span className="text-xs font-medium text-foreground">{label}</span>
+                <span className="text-xs font-medium text-foreground">
+                  {label}
+                </span>
               </div>
             ))}
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="#produtos"
-              className="flex items-center gap-2 rounded-full bg-brand-gradient px-5 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-opacity hover:opacity-90"
-            >
+            <Button href="#produtos" pill size="lg">
               <ShoppingBag className="size-4" aria-hidden />
               Comprar agora
-            </a>
-            <a
-              href="#duvidas"
-              className="flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-            >
+            </Button>
+            <Button href="#duvidas" variant="secondary" pill size="lg">
               Saiba mais
               <ArrowDown className="size-4" aria-hidden />
-            </a>
+            </Button>
           </div>
         </div>
 
@@ -66,13 +74,13 @@ export function HeroSection() {
             aria-hidden
           />
 
-          <div
-            className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-primary/30 bg-[repeating-conic-gradient(var(--secondary)_0%_25%,transparent_0%_50%)] bg-size-[24px_24px] p-8 text-center shadow-soft"
-          >
-          </div>
+          <div className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-primary/30 bg-[repeating-conic-gradient(var(--secondary)_0%_25%,transparent_0%_50%)] bg-size-[24px_24px] p-8 text-center shadow-soft"></div>
 
           <div className="absolute right-2 top-1/2 flex w-56 -translate-y-1/2 items-start gap-2.5 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-soft sm:translate-x-6 lg:translate-x-10">
-            <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+            <Sparkles
+              className="mt-0.5 size-4 shrink-0 text-primary"
+              aria-hidden
+            />
             <p className="text-xs font-semibold leading-snug text-foreground">
               INVISÌVEL. NÃO É MÁGICA.
               <br />É TECNOLOGIA.
@@ -81,5 +89,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }

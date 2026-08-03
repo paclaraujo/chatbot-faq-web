@@ -1,1 +1,1 @@
-export { TopQuestionsChart } from "./TopQuestionsChart";
+export { TopQuestionsChart } from './TopQuestionsChart'

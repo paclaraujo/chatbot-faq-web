@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
 export function Panel({
   title,
   description,
   children,
 }: {
-  title: string;
-  description: string;
-  children: ReactNode;
+  title: string
+  description: string
+  children: ReactNode
 }) {
   return (
     <section className="rounded-2xl border border-border bg-card p-5 shadow-soft">
@@ -15,5 +15,5 @@ export function Panel({
       <p className="mb-4 text-xs text-muted-foreground">{description}</p>
       {children}
     </section>
-  );
+  )
 }

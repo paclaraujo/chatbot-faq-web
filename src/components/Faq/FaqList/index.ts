@@ -1,1 +1,1 @@
-export { FaqList } from "./FaqList";
+export { FaqList } from './FaqList'

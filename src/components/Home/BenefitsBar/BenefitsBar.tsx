@@ -1,11 +1,15 @@
-import { Headset, Lock, ShieldCheck, Truck } from "lucide-react";
+import { Headset, Lock, ShieldCheck, Truck } from 'lucide-react'
 
 const BENEFITS = [
-  { icon: Truck, title: "Frete Grátis", subtitle: "Para todo o Brasil" },
-  { icon: ShieldCheck, title: "Garantia Total", subtitle: "30 dias de garantia" },
-  { icon: Lock, title: "Pagamento Seguro", subtitle: "Seus dados protegidos" },
-  { icon: Headset, title: "Suporte 24/7", subtitle: "Estamos sempre aqui" },
-];
+  { icon: Truck, title: 'Frete Grátis', subtitle: 'Para todo o Brasil' },
+  {
+    icon: ShieldCheck,
+    title: 'Garantia Total',
+    subtitle: '30 dias de garantia',
+  },
+  { icon: Lock, title: 'Pagamento Seguro', subtitle: 'Seus dados protegidos' },
+  { icon: Headset, title: 'Suporte 24/7', subtitle: 'Estamos sempre aqui' },
+]
 
 export function BenefitsBar() {
   return (
@@ -24,5 +28,5 @@ export function BenefitsBar() {
         ))}
       </div>
     </section>
-  );
+  )
 }

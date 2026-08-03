@@ -1,21 +1,21 @@
-import { Activity } from "lucide-react";
+import { Activity } from 'lucide-react'
 
-import { Panel } from "@/components/Dashboard/Panel";
-import type { AnalyticsUnanswered } from "@/lib/api";
+import { Panel } from '@/components/Dashboard/Panel'
+import type { AnalyticsUnanswered } from '@/lib/api'
 
-const DATETIME_FORMATTER = new Intl.DateTimeFormat("pt-BR", {
-  day: "2-digit",
-  month: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+const DATETIME_FORMATTER = new Intl.DateTimeFormat('pt-BR', {
+  day: '2-digit',
+  month: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+})
 
 export function UnansweredTable({
   rows,
   loading,
 }: {
-  rows: AnalyticsUnanswered[];
-  loading: boolean;
+  rows: AnalyticsUnanswered[]
+  loading: boolean
 }) {
   return (
     <Panel
@@ -23,7 +23,9 @@ export function UnansweredTable({
       description="Lacunas na base de conhecimento priorizadas por frequência"
     >
       {loading ? (
-        <p className="py-8 text-center text-sm text-muted-foreground">Carregando…</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          Carregando…
+        </p>
       ) : rows.length === 0 ? (
         <p className="py-8 text-center text-sm text-muted-foreground">
           Nenhuma lacuna registrada no período.
@@ -39,7 +41,10 @@ export function UnansweredTable({
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.question} className="border-b border-border/60 last:border-0">
+              <tr
+                key={row.question}
+                className="border-b border-border/60 last:border-0"
+              >
                 <td className="py-2.5 pr-4 text-foreground">{row.question}</td>
                 <td className="py-2.5 pr-4 text-muted-foreground">
                   {DATETIME_FORMATTER.format(new Date(row.lastAskedAt))}
@@ -56,5 +61,5 @@ export function UnansweredTable({
         </table>
       )}
     </Panel>
-  );
+  )
 }

@@ -1,41 +1,51 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { BarChart3, ListChecks, LogOut, Menu, MessagesSquare, X } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
+import {
+  BarChart3,
+  ListChecks,
+  LogOut,
+  Menu,
+  MessagesSquare,
+  X,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 
-import { useAuthEmail } from "@/hooks/useAuthEmail";
-import { clearSession } from "@/lib/authStore";
+import { useAuthEmail } from '@/hooks/useAuthEmail'
+import { clearSession } from '@/lib/authStore'
 
 function navLinkClass(active: boolean) {
   return `flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-    active ? "bg-card text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground"
-  }`;
+    active
+      ? 'bg-card text-foreground shadow-soft'
+      : 'text-muted-foreground hover:text-foreground'
+  }`
 }
 
 function mobileNavLinkClass(active: boolean) {
   return `flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
     active
-      ? "bg-secondary text-foreground"
-      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
-  }`;
+      ? 'bg-secondary text-foreground'
+      : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
+  }`
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const navigate = useNavigate();
-  const isChat = pathname.startsWith("/chat");
-  const isDashboard = pathname.startsWith("/dashboard");
-  const isFaq = pathname.startsWith("/faq");
-  const email = useAuthEmail();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const showNav = Boolean(email) && !isChat;
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const navigate = useNavigate()
+  const isChat = pathname.startsWith('/chat')
+  const isDashboard = pathname.startsWith('/dashboard')
+  const isFaq = pathname.startsWith('/faq')
+  const email = useAuthEmail()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const showNav = Boolean(email) && !isChat
 
   useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+    setMenuOpen(false)
+  }, [pathname])
 
   function handleSignOut() {
-    clearSession();
-    navigate({ to: "/" });
+    clearSession()
+    navigate({ to: '/' })
   }
 
   return (
@@ -78,10 +88,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={() => setMenuOpen((open) => !open)}
                 className="flex size-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:text-foreground md:hidden"
-                aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+                aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
                 aria-expanded={menuOpen}
               >
-                {menuOpen ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+                {menuOpen ? (
+                  <X className="size-5" aria-hidden />
+                ) : (
+                  <Menu className="size-5" aria-hidden />
+                )}
               </button>
             </>
           )}
@@ -100,7 +114,9 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             </nav>
             <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-              <span className="truncate text-xs text-muted-foreground">{email}</span>
+              <span className="truncate text-xs text-muted-foreground">
+                {email}
+              </span>
               <button
                 type="button"
                 onClick={handleSignOut}
@@ -113,7 +129,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         )}
       </header>
-      <main className="mx-auto w-full max-w-350 flex-1 px-4 py-6 sm:px-6">{children}</main>
+      <main className="mx-auto w-full max-w-350 flex-1 px-4 py-6 sm:px-6">
+        {children}
+      </main>
     </div>
-  );
+  )
 }

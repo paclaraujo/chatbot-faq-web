@@ -1,31 +1,35 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
+import { Plus } from 'lucide-react'
 
-import { AppShell } from "@/components/AppShell";
-import { ErrorBanner } from "@/components/ErrorBanner";
-import { FaqForm } from "@/components/Faq/FaqForm";
-import { FaqList } from "@/components/Faq/FaqList";
-import { useFaqAdmin } from "@/hooks/useFaqAdmin";
+import { AppShell } from '@/components/AppShell'
+import { Button } from '@/components/Button'
+import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { ErrorBanner } from '@/components/ErrorBanner'
+import { FaqForm } from '@/components/Faq/FaqForm'
+import { FaqList } from '@/components/Faq/FaqList'
+import { useFaqAdmin } from '@/hooks/useFaqAdmin'
 
-export const Route = createFileRoute("/_admin/faq")({
+export const Route = createFileRoute('/_admin/faq')({
   head: () => ({
     meta: [
-      { title: "Base de conhecimento — Atlas FAQ" },
+      { title: 'Base de conhecimento — Atlas FAQ' },
       {
-        name: "description",
+        name: 'description',
         content:
-          "Cadastre, edite e remova as perguntas e respostas usadas pelo chatbot de FAQ, organizadas por categoria.",
+          'Cadastre, edite e remova as perguntas e respostas usadas pelo chatbot de FAQ, organizadas por categoria.',
       },
-      { property: "og:title", content: "Base de conhecimento — Atlas FAQ" },
+      { property: 'og:title', content: 'Base de conhecimento — Atlas FAQ' },
       {
-        property: "og:description",
-        content: "Gerencie as perguntas frequentes respondidas automaticamente pelo assistente.",
+        property: 'og:description',
+        content:
+          'Gerencie as perguntas frequentes respondidas automaticamente pelo assistente.',
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
   }),
   component: FaqAdmin,
-});
+})
 
 function FaqAdmin() {
   const {
@@ -41,11 +45,16 @@ function FaqAdmin() {
     error,
     loading,
     saving,
+    isFormOpen,
+    openCreate,
+    pendingDelete,
     onSubmit,
     startEdit,
-    remove,
+    requestDelete,
+    confirmDelete,
+    cancelDelete,
     resetForm,
-  } = useFaqAdmin();
+  } = useFaqAdmin()
 
   return (
     <AppShell>
@@ -56,36 +65,53 @@ function FaqAdmin() {
               Base de conhecimento
             </h1>
             <p className="text-sm text-muted-foreground">
-              Cadastre, edite e remova as perguntas respondidas automaticamente pelo chatbot.
+              Cadastre, edite e remova as perguntas respondidas automaticamente
+              pelo chatbot.
             </p>
           </div>
+          <Button onClick={openCreate}>
+            <Plus className="size-4" aria-hidden />
+            Nova pergunta
+          </Button>
         </div>
 
         {error && <ErrorBanner message={error} />}
 
-        <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
-          <FaqForm
-            form={form}
-            onChange={setForm}
-            categories={categories}
-            editing={editingId !== null}
-            saving={saving}
-            feedback={feedback}
-            onSubmit={onSubmit}
-            onCancel={resetForm}
-          />
+        <FaqList
+          entries={entries}
+          filtered={filtered}
+          filter={filter}
+          onFilterChange={setFilter}
+          loading={loading}
+          onEdit={startEdit}
+          onDelete={requestDelete}
+        />
 
-          <FaqList
-            entries={entries}
-            filtered={filtered}
-            filter={filter}
-            onFilterChange={setFilter}
-            loading={loading}
-            onEdit={startEdit}
-            onDelete={remove}
-          />
-        </div>
+        <FaqForm
+          open={isFormOpen}
+          form={form}
+          onChange={setForm}
+          categories={categories}
+          editing={editingId !== null}
+          saving={saving}
+          feedback={feedback}
+          onSubmit={onSubmit}
+          onCancel={resetForm}
+        />
+
+        <ConfirmDialog
+          open={pendingDelete !== null}
+          title="Remover pergunta"
+          message={
+            pendingDelete
+              ? `Remover a pergunta "${pendingDelete.question}"? Essa ação não pode ser desfeita.`
+              : ''
+          }
+          confirmLabel="Remover"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
       </div>
     </AppShell>
-  );
+  )
 }

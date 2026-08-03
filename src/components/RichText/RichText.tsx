@@ -1,28 +1,28 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
 export function RichText({ text }: { text: string }) {
   return (
     <>
-      {text.split("\n").map((line, lineIndex) => (
-        <p key={lineIndex} className={lineIndex > 0 ? "mt-2" : undefined}>
+      {text.split('\n').map((line, lineIndex) => (
+        <p key={lineIndex} className={lineIndex > 0 ? 'mt-2' : undefined}>
           {renderInline(line)}
         </p>
       ))}
     </>
-  );
+  )
 }
 
 function renderInline(line: string): ReactNode[] {
-  const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).filter(Boolean);
+  const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).filter(Boolean)
   return parts.map((part, index) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
+    if (part.startsWith('**') && part.endsWith('**')) {
       return (
         <strong key={index} className="font-semibold">
           {part.slice(2, -2)}
         </strong>
-      );
+      )
     }
-    if (part.startsWith("`") && part.endsWith("`")) {
+    if (part.startsWith('`') && part.endsWith('`')) {
       return (
         <code
           key={index}
@@ -30,8 +30,8 @@ function renderInline(line: string): ReactNode[] {
         >
           {part.slice(1, -1)}
         </code>
-      );
+      )
     }
-    return <span key={index}>{part}</span>;
-  });
+    return <span key={index}>{part}</span>
+  })
 }

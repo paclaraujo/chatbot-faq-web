@@ -1,8 +1,9 @@
 import { Plus, X } from 'lucide-react'
 import { useState } from 'react'
-import type { FormEvent, ReactNode } from 'react'
+import type { FormEvent } from 'react'
 
 import { Button } from '@/components/Button'
+import { Input } from '@/components/Input'
 import { Modal } from '@/components/Modal'
 import type { FaqFormState } from '@/hooks/useFaqAdmin'
 
@@ -88,45 +89,40 @@ export function FaqForm({
       </p>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-3">
-        <Field label="Pergunta" error={errorFor('question')}>
-          <input
-            value={form.question}
-            onChange={(e) => onChange({ ...form, question: e.target.value })}
-            onBlur={() => handleBlur('question')}
-            placeholder="Como faço para trocar um produto?"
-            aria-invalid={Boolean(errorFor('question'))}
-            className={inputClass(Boolean(errorFor('question')))}
-          />
-        </Field>
+        <Input
+          label="Pergunta"
+          value={form.question}
+          onChange={(e) => onChange({ ...form, question: e.target.value })}
+          onBlur={() => handleBlur('question')}
+          placeholder="Como faço para trocar um produto?"
+          error={errorFor('question')}
+        />
 
-        <Field label="Resposta" error={errorFor('answer')}>
-          <textarea
-            value={form.answer}
-            onChange={(e) => onChange({ ...form, answer: e.target.value })}
-            onBlur={() => handleBlur('answer')}
-            rows={5}
-            placeholder="Use **negrito** para destacar trechos importantes."
-            aria-invalid={Boolean(errorFor('answer'))}
-            className={inputClass(Boolean(errorFor('answer')), true)}
-          />
-        </Field>
+        <Input
+          label="Resposta"
+          multiline
+          value={form.answer}
+          onChange={(e) => onChange({ ...form, answer: e.target.value })}
+          onBlur={() => handleBlur('answer')}
+          rows={5}
+          placeholder="Use **negrito** para destacar trechos importantes."
+          error={errorFor('answer')}
+        />
 
-        <Field label="Categoria" error={errorFor('category')}>
-          <input
-            value={form.category}
-            onChange={(e) => onChange({ ...form, category: e.target.value })}
-            onBlur={() => handleBlur('category')}
-            placeholder="conta"
-            list="faq-categories"
-            aria-invalid={Boolean(errorFor('category'))}
-            className={inputClass(Boolean(errorFor('category')))}
-          />
-          <datalist id="faq-categories">
-            {categories.map((category) => (
-              <option key={category} value={category} />
-            ))}
-          </datalist>
-        </Field>
+        <Input
+          label="Categoria"
+          value={form.category}
+          onChange={(e) => onChange({ ...form, category: e.target.value })}
+          onBlur={() => handleBlur('category')}
+          placeholder="conta"
+          list="faq-categories"
+          error={errorFor('category')}
+        />
+        <datalist id="faq-categories">
+          {categories.map((category) => (
+            <option key={category} value={category} />
+          ))}
+        </datalist>
 
         <div className="flex gap-2 pt-1">
           <Button
@@ -147,31 +143,5 @@ export function FaqForm({
         )}
       </form>
     </Modal>
-  )
-}
-
-function inputClass(invalid: boolean, textarea = false) {
-  return `w-full ${textarea ? 'resize-y' : ''} rounded-xl border ${
-    invalid ? 'border-destructive' : 'border-border'
-  } bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-ring`
-}
-
-function Field({
-  label,
-  error,
-  children,
-}: {
-  label: string
-  error: string | null
-  children: ReactNode
-}) {
-  return (
-    <label className="block space-y-1.5">
-      <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {label}
-      </span>
-      {children}
-      {error && <span className="block text-xs text-destructive">{error}</span>}
-    </label>
   )
 }
